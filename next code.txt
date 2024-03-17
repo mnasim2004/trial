@@ -1,0 +1,33 @@
+npx express-generator --hbs or express --hbs
+
+npm install
+
+clear all vulnerabilities
+
+npm start //to start project
+
+npm install nodemon // to start surver automatic   
+
+change in package.json
+
+        {
+          "name": "trial",
+          "version": "0.0.0",
+          "private": true,
+          "scripts": {
+            "start": "nodemon ./bin/www"  <= here
+          },
+          "dependencies": {
+            "cookie-parser": "~1.4.4",
+            "debug": "~2.6.9",
+            "express": "^4.18.3",
+            "hbs": "^4.2.0",
+            "http-errors": "~1.6.3",
+            "morgan": "~1.9.1",
+            "nodemon": "^3.1.0"
+          }
+        }
+
+npm install mongodb // to connect nodejs and mongodb
+
+var MongoClient= require("mongodb").MongoClient
