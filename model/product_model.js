@@ -2,6 +2,10 @@ const mongoose = require('mongoose');
 
 // Define schema
 const productSchema = new mongoose.Schema({
+    user: {
+        type: String,
+        required: true
+    },
     brand: {
         type: String,
         required: true

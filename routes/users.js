@@ -39,7 +39,7 @@ router.post('/profile', async function(req, res, next) {
       });
 
       await newUser.save();
-      res.redirect('/');
+      res.redirect('/users');
   } catch (err) {
       return next(err);
   }

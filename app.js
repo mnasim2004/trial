@@ -7,7 +7,7 @@ const dotenv=require('dotenv')
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
-// var productRouter = require('./routes/product');
+var productRouter = require('./routes/product');
 const { db } = require('./db');
 var app = express();
 dotenv.config()
@@ -20,10 +20,14 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
+const { s3Uploadv2, s3Uploadv3 } = require("./s3Service");
+
+
 db();
+
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
-// app.use('/product', productRouter);
+app.use('/product', productRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
