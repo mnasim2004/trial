@@ -5,6 +5,10 @@ const { s3Uploadv2, s3Uploadv3 } = require("../s3Service");
 const uuid = require("uuid").v4;
 var router = express.Router();
 
+
+router.get('/addp', function(req, res, next) {
+    res.render('product.hbs', { title: 'Example' });
+  });
 //single file upload
 // const upload = multer({ dest: "uploads/" });
 // app.post("/upload", upload.single("file"), (req, res) => {
@@ -68,15 +72,47 @@ const upload = multer({
 //   }
 // });
 
+
+
+
+
+// router.post("/upload", upload.array("file"), async (req, res) => {
+//   try {
+//     const results = await s3Uploadv3(req.files);
+//     console.log(results);
+//     return res.json({ status: "success" });
+//   } catch (err) {
+//     console.log(err);
+//   }
+// });
+
+
+
 router.post("/upload", upload.array("file"), async (req, res) => {
-  try {
-    const results = await s3Uploadv3(req.files);
-    console.log(req);
-    return res.json({ status: "success" });
-  } catch (err) {
-    console.log(err);
-  }
-});
+    try {
+      const keys = await s3Uploadv2(req.files);
+      console.log(keys[0]); // Log the array of generated keys
+
+    //   const newProduct = new Product({
+    //     username: req.body.username,
+    //     name: req.body.name,
+    //     email: req.body.email,
+    //     password: hashpassword,
+    //     address: req.body.address,
+    //     pincode: req.body.pincode,
+    //     phoneNumber: req.body.phoneNumber
+    // });
+
+    // await newProduct.save();
+
+
+      return res.json({ status: "success" });
+    } catch (err) {
+      console.log(err);
+      return res.status(500).json({ error: "Internal server error" });
+    }
+  });
+
 
 router.use((error, req, res, next) => {
   if (error instanceof multer.MulterError) {
