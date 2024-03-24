@@ -38,16 +38,24 @@
 <div class="container">
     <div class="row">
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-            <h2>All Products</h2>
+            <h2>My Products</h2>
             <ul class="list-group">
                 {{#each products}}
                 <li class="list-group-item">
-                    <img src="https://trialmate.s3.amazonaws.com/{{ this.photoUrl }}" alt="Product Image" class="product-image">
-                    <h4>{{this.brand}}</h4>
-                    <p><strong>Title:</strong> {{this.title}}</p>
-                    <p><strong>Description:</strong> {{this.description}}</p>
-                    <p><strong>Price:</strong> {{this.price}}</p>
-                    <p><strong>Location:</strong> {{this.location}}</p>
+                    <div class="product-info">
+                        <img src="https://trialmate.s3.amazonaws.com/{{ this.photoUrl }}" alt="Product Image" class="product-image">
+                        <h4>{{this.brand}}</h4>
+                        <p><strong>Title:</strong> {{this.title}}</p>
+                        <p><strong>Description:</strong> {{this.description}}</p>
+                        <p><strong>Price:</strong> {{this.price}}</p>
+                        <p><strong>Location:</strong> {{this.location}}</p>
+                    </div>
+                    <div class="product-actions">
+                        <a href="/product/editp/{{this._id}}" class="btn btn-primary">Edit</a>
+                        <form action="/product/delete/{{this._id}}" method="POST">
+                            <button type="submit" class="btn btn-danger">Delete</button>
+                        </form>
+                    </div>
                 </li>
                 {{/each}}
             </ul>

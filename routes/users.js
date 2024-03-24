@@ -107,7 +107,28 @@ router.get('/:id', async function (req,res,next){
     next(err)
   }
 })
+// const ObjectId = mongoose.Types.ObjectId;
 
+// router.get('/:id', async function (req, res, next) {
+//   try {
+//     let userId = req.session.user;
+//     const user = await User.findById(req.params.id);
+
+//     const query = {};
+//     if (userId) {
+//       if (mongoose.Types.ObjectId.isValid(userId)) {
+//         query.user = ObjectId(userId); // Convert userId to ObjectId
+//       } else {
+//         // Handle invalid userId
+//       }
+//     }
+
+//     const products = await Product.find(query);
+//     res.render('profile.hbs', { user, products });
+//   } catch (err) {
+//     next(err);
+//   }
+// });
 
 
 

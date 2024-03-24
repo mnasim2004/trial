@@ -26,6 +26,8 @@ router.get('/addp', function(req, res, next) {
 router.post("/upload", upload.any(), async (req, res) => {
     try {
       let user= req.session.user;
+      const ObjectId = require('mongoose').Types.ObjectId;
+      const userObjectId = new ObjectId(user);
       var keys = await s3Upload(req.files);
       console.log(keys); 
       const newProduct = new Product({
@@ -40,7 +42,7 @@ router.post("/upload", upload.any(), async (req, res) => {
 
     await newProduct.save();
 
-      return res.json({ status: "success" });
+    res.redirect(`/users/${userObjectId}`);
     } catch (err) {
       console.log(err);
       return res.status(500).json({ error: "Internal server error" });
@@ -79,8 +81,81 @@ router.get('/searchp', async function(req, res, next) {
         next(err);
     }
   });
+  router.get('/editp/:id', async function(req, res, next) {
+    try {
+        // Retrieve the product ID from the request parameters
+        const productId = req.params.id;
 
+        // Fetch the product details from the database based on the product ID
+        const product = await Product.findById(productId);
 
+        // Render the editp.hbs template and pass the product details to it
+        res.render('editp.hbs', {  product: product });
+    } catch (err) {
+        // Handle errors
+        next(err);
+    }
+});
+router.post('/updatep/:id', upload.any(), async function(req, res, next) {
+    try {
+        let userId= req.session.user;
+
+        const ObjectId = require('mongoose').Types.ObjectId;
+        const userObjectId = new ObjectId(userId);
+
+        const productId = req.params.id;
+        var keys;
+
+        // Check if there are any uploaded files
+        if (req.files.length > 0) {
+            // Upload new files to S3 and get the keys
+            keys = await s3Upload(req.files);
+        } else {
+            // No new files uploaded, so use the existing keys
+            // Retrieve the product to get the existing keys
+            const product = await Product.findById(productId);
+            keys = product.photoUrl;
+        }
+        // Fetch the product details from the request body
+        const { brand, title, description, price, location } = req.body;
+
+        // Update the product in the database
+        await Product.findByIdAndUpdate(productId, {
+            brand: brand,
+            title: title,
+            description: description,
+            price: price,
+            location: location,
+            photoUrl: keys
+        });
+        console.log(userId);
+        // Redirect the user to the profile page or any other appropriate page
+        res.redirect(`/users/${userObjectId}`);
+    } catch (err) {
+        // Handle errors
+        next(err);
+    }
+});
+
+router.post('/delete/:id', async function(req, res, next) {
+    try {
+        // Retrieve the product ID from the request parameters
+        let userId= req.session.user;
+
+        const ObjectId = require('mongoose').Types.ObjectId;
+        const userObjectId = new ObjectId(userId);
+        const productId = req.params.id;
+
+        // Delete the product from the database
+        await Product.findByIdAndDelete(productId);
+
+        // Redirect the user to a relevant page after successful deletion
+        res.redirect(`/users/${userObjectId}`); // Redirect to the products page or any other appropriate page
+    } catch (err) {
+        // Handle errors
+        next(err);
+    }
+});
   
 // router.get('/searchr', async function(req, res, next) {
 //     try {
