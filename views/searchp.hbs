@@ -1,0 +1,56 @@
+    <style>
+
+.product-image {
+    max-width: 200px; /* Adjust the maximum width as needed */
+    max-height: 150px; /* Adjust the maximum height as needed */
+}
+
+    </style>
+
+
+
+
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <h1>Search Products</h1>
+            <form action="/product/searchp" method="GET">
+                <div class="form-group">
+                    <label for="brand">Brand:</label>
+                    <input type="text" class="form-control" id="brand" name="brand">
+                </div>
+                <div class="form-group">
+                    <label for="price">Price:</label>
+                    <input type="number" class="form-control" id="price" name="price">
+                </div>
+                <div class="form-group">
+                    <label for="location">Location:</label>
+                    <input type="text" class="form-control" id="location" name="location">
+                </div>
+                <button type="submit" class="btn btn-primary">Search</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <h2>All Products</h2>
+            <ul class="list-group">
+                {{#each products}}
+                <li class="list-group-item">
+                    <img src="https://trialmate.s3.amazonaws.com/{{ this.photoUrl }}" alt="Product Image" class="product-image">
+                    <h4>{{this.brand}}</h4>
+                    <p><strong>Title:</strong> {{this.title}}</p>
+                    <p><strong>Description:</strong> {{this.description}}</p>
+                    <p><strong>Price:</strong> {{this.price}}</p>
+                    <p><strong>Location:</strong> {{this.location}}</p>
+                </li>
+                {{/each}}
+            </ul>
+        </div>
+    </div>
+</div>

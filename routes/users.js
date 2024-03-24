@@ -2,6 +2,8 @@ var express = require('express');
 var router = express.Router();
 var bcrypt =  require('bcrypt');
 const User = require('../model/user_model');
+const Product = require("../model/product_model");
+
 
 router.get('/signup', function(req, res, next) {
   res.render('users.hbs', { title: 'Example' });
@@ -68,6 +70,8 @@ router.post('/login', async function(req,res,next){
    if(user){
        const valid= await bcrypt.compareSync(req.body.password, user.password);
        if(valid){
+          req.session.loggedIn= true;
+          req.session.user= user._id;
           res.redirect(`/users/${user._id}`);
        }
        else{
@@ -79,19 +83,34 @@ router.post('/login', async function(req,res,next){
    }
   }catch(err){
     
-   next(err)
-        }
+   next(err)}
 })
+router.get('/logout', async function (req,res,next){
+  req.session.destroy();
+  res.redirect('/users');
+})
+
 
 router.get('/:id', async function (req,res,next){
   try{
+    let userId= req.session.user;
     const user= await User.findById(req.params.id);
-    res.render('profile.hbs', { user });
+    const query = {};
+    if (userId) {
+        query.user =  userId ; // Add condition to exclude specific user ID
+    }
+
+    const products = await Product.find(query);
+    res.render('profile.hbs', { user ,products});
   }
   catch(err){
     next(err)
   }
 })
+
+
+
+
 
 module.exports = router;
 

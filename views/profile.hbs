@@ -1,7 +1,23 @@
+    <style>
+
+.product-image {
+    max-width: 200px; /* Adjust the maximum width as needed */
+    max-height: 150px; /* Adjust the maximum height as needed */
+}
+
+    </style>
+
+
+
+
+
 <div class="container">
     <div class="row">
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-            <h1>User Details</h1>
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h1>User Details</h1>
+                <a href="/users/logout" class="btn btn-danger">Logout</a>
+            </div>
             <ul>
                 <li><strong>Username:</strong> {{ user.username }}</li>
                 <li><strong>Name:</strong> {{ user.name }}</li>
@@ -13,8 +29,28 @@
             <!-- Add buttons -->
             <div>
                 <a href="/product/addp" class="btn btn-primary">Add Product</a>
-                <a href="/product/search" class="btn btn-primary">Search Product</a>
+                <a href="/product/searchp" class="btn btn-primary">Search Product</a>
             </div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <h2>All Products</h2>
+            <ul class="list-group">
+                {{#each products}}
+                <li class="list-group-item">
+                    <img src="https://trialmate.s3.amazonaws.com/{{ this.photoUrl }}" alt="Product Image" class="product-image">
+                    <h4>{{this.brand}}</h4>
+                    <p><strong>Title:</strong> {{this.title}}</p>
+                    <p><strong>Description:</strong> {{this.description}}</p>
+                    <p><strong>Price:</strong> {{this.price}}</p>
+                    <p><strong>Location:</strong> {{this.location}}</p>
+                </li>
+                {{/each}}
+            </ul>
         </div>
     </div>
 </div>

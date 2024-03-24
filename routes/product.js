@@ -1,110 +1,44 @@
 require("dotenv").config();
 const express = require("express");
 const multer = require("multer");
-const { s3Uploadv2, s3Uploadv3 } = require("../s3Service");
+const { s3Upload } = require("../s3Service");
 const uuid = require("uuid").v4;
-var router = express.Router();
+const Product = require("../model/product_model");
+
+const router = express.Router();
+
+const storage = multer.memoryStorage();
+
+
+const upload = multer({
+  storage
+});
+
+
 
 
 router.get('/addp', function(req, res, next) {
     res.render('product.hbs', { title: 'Example' });
   });
-//single file upload
-// const upload = multer({ dest: "uploads/" });
-// app.post("/upload", upload.single("file"), (req, res) => {
-//   res.json({ status: "success" });
-// });
-
-// multiple file uploads
-// const upload = multer({ dest: "uploads/" });
-// app.post("/upload", upload.array("file", 2), (req, res) => {
-//   res.json({ status: "success" });
-// });
-
-// multiple fields upload
-// const upload = multer({ dest: "uploads/" });
-
-// const multiUpload = upload.fields([
-//   { name: "avatar", maxCount: 1 },
-//   { name: "resume", maxCount: 1 },
-// ]);
-// app.post("/upload", multiUpload, (req, res) => {
-//   console.log(req.files);
-//   res.json({ status: "success" });
-// });
-
-// custom filename
-
-// const storage = multer.diskStorage({
-//   destination: (req, file, cb) => {
-//     cb(null, "uploads");
-//   },
-//   filename: (req, file, cb) => {
-//     const { originalname } = file;
-//     cb(null, `${uuid()}-${originalname}`);
-//   },
-// });
-
-const storage = multer.memoryStorage();
-
-const fileFilter = (req, file, cb) => {
-  if (file.mimetype.split("/")[0] === "image") {
-    cb(null, true);
-  } else {
-    cb(new multer.MulterError("LIMIT_UNEXPECTED_FILE"), false);
-  }
-};
-
-// ["image", "jpeg"]
-
-const upload = multer({
-  storage,
-  fileFilter,
-  limits: { fileSize: 1000000000, files: 2 },
-});
-// app.post("/upload", upload.array("file"), async (req, res) => {
-//   try {
-//     const results = await s3Uploadv2(req.files);
-//     console.log(results);
-//     return res.json({ status: "success" });
-//   } catch (err) {
-//     console.log(err);
-//   }
-// });
 
 
 
-
-
-// router.post("/upload", upload.array("file"), async (req, res) => {
-//   try {
-//     const results = await s3Uploadv3(req.files);
-//     console.log(results);
-//     return res.json({ status: "success" });
-//   } catch (err) {
-//     console.log(err);
-//   }
-// });
-
-
-
-router.post("/upload", upload.array("file"), async (req, res) => {
+router.post("/upload", upload.any(), async (req, res) => {
     try {
-      const keys = await s3Uploadv2(req.files);
-      console.log(keys[0]); // Log the array of generated keys
+      let user= req.session.user;
+      var keys = await s3Upload(req.files);
+      console.log(keys); 
+      const newProduct = new Product({
+        user: user,
+        brand: req.body.brand,
+        title: req.body.title,
+        description: req.body.description,
+        price: req.body.price,
+        location: req.body.location,
+        photoUrl: keys
+    });
 
-    //   const newProduct = new Product({
-    //     username: req.body.username,
-    //     name: req.body.name,
-    //     email: req.body.email,
-    //     password: hashpassword,
-    //     address: req.body.address,
-    //     pincode: req.body.pincode,
-    //     phoneNumber: req.body.phoneNumber
-    // });
-
-    // await newProduct.save();
-
+    await newProduct.save();
 
       return res.json({ status: "success" });
     } catch (err) {
@@ -114,28 +48,53 @@ router.post("/upload", upload.array("file"), async (req, res) => {
   });
 
 
-router.use((error, req, res, next) => {
-  if (error instanceof multer.MulterError) {
-    if (error.code === "LIMIT_FILE_SIZE") {
-      return res.status(400).json({
-        message: "file is too large",
-      });
-    }
+router.get('/searchp', async function(req, res, next) {
+    
+    try {
+        let userId= req.session.user; // Get the user ID to exclude from the query
+        const { brand, price, location, user } = req.query;
+        
+        // Construct the MongoDB query based on the provided search criteria
+        const query = {};
+        if (brand) {
+            query.brand = brand;
+        }
+        if (price) {
+            query.price = price;
+        }
+        if (location) {
+            query.location = location;
+        }
+        if (userId) {
+            query.user = { $ne: userId }; // Add condition to exclude specific user ID
+        }
+        
+        // Construct the MongoDB query to find all products excluding the specified user ID
 
-    if (error.code === "LIMIT_FILE_COUNT") {
-      return res.status(400).json({
-        message: "File limit reached",
-      });
+        // Fetch all products from the database excluding the specified user ID
+        const products = await Product.find(query);
+        // Pass all products to the Handlebars template for rendering
+        res.render('searchp.hbs',{products});
+    } catch (err) {
+        next(err);
     }
+  });
 
-    if (error.code === "LIMIT_UNEXPECTED_FILE") {
-      return res.status(400).json({
-        message: "File must be an image",
-      });
-    }
-  }
-});
+
+  
+// router.get('/searchr', async function(req, res, next) {
+//     try {
+//         let userId= req.session.user;
+        
+//         // Execute the MongoDB query to find matching products
+//         const products = await Product.find(query);
+//         return res.json({ status: "success" , products});
+//         //res.render('search_results.hbs', { products, brand, price, location });
+//     } catch (err) {
+//         next(err);
+//     }
+//   });
+
 
 
 module.exports = router;
-
