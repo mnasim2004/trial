@@ -1,40 +1,53 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
-const dotenv=require('dotenv')
-var session=require('express-session')
+var createError = require("http-errors");
+var express = require("express");
+var path = require("path");
+var cookieParser = require("cookie-parser");
+var logger = require("morgan");
+const dotenv = require("dotenv");
+var session = require("express-session");
+var { engine } = require("express-handlebars");
+const exphbs = require("express-handlebars");
 
-
-
-
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
-var productRouter = require('./routes/product');
-const { db } = require('./db');
+var indexRouter = require("./routes/index");
+var usersRouter = require("./routes/users");
+var productRouter = require("./routes/product");
+const { db } = require("./db");
 var app = express();
-dotenv.config()
+dotenv.config();
+
+app.engine(
+  "hbs",
+  engine({
+    extname: "hbs",
+    defaultLayout: "layout",
+    layoutsDir: path.join(__dirname, "views/layouts"),
+    partialsDir: path.join(__dirname, "views/partials"),
+    runtimeOptions: {
+      allowProtoPropertiesByDefault: true,
+      allowProtoMethodsByDefault: true,
+    },
+  }),
+);
 
 // view engine setup
 // Set EJS as the view engine
-app.set('view engine', 'ejs');
-app.use(logger('dev'));
+app.set("view engine", "ejs");
+
+app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(session({secret:"Key",cookie:{maxAge:600000}}))
+app.use(session({ secret: "Key", cookie: { maxAge: 60000 } }));
 //const { s3Uploadv2, s3Uploadv3 } = require("./s3Service");
-
 
 db();
 
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
-app.use('/product', productRouter);
+app.use("/", indexRouter);
+app.use("/users", usersRouter);
+app.use("/product", productRouter);
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   next(createError(404));
 });
 
@@ -49,11 +62,8 @@ app.use(function(req, res, next) {
 //   res.render('error');
 // });
 
-
 app.listen(5000, () => {
   console.log("Server running on port{5000}");
-      });
-
+});
 
 module.exports = app;
-

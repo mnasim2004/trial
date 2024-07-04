@@ -1,56 +1,108 @@
-    <style>
+<style>
 
-.product-image {
-    max-width: 200px; /* Adjust the maximum width as needed */
-    max-height: 150px; /* Adjust the maximum height as needed */
-}
+  .product-image { max-width: 200px; /* Adjust the maximum width as needed */
+  max-height: 150px; /* Adjust the maximum height as needed */ }
+  .user-photo-container { width: 50px; /* Adjust width as needed */ height:
+  50px; /* Adjust height as needed */ overflow: hidden; border-radius: 50%;
+  margin: 0 auto; } .user-photo { width: 100%; height: auto; } .username {
+  text-align: center; font-size: 12px; /* Adjust font size as needed */
+  margin-top: 5px; /* Adjust top margin as needed */ }
 
-    </style>
-
-
-
-
-
+</style>
 
 <div class="container">
-    <div class="row">
-        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-            <h1>Search Products</h1>
-            <form action="/product/searchp" method="GET">
-                <div class="form-group">
-                    <label for="brand">Brand:</label>
-                    <input type="text" class="form-control" id="brand" name="brand">
-                </div>
-                <div class="form-group">
-                    <label for="price">Price:</label>
-                    <input type="number" class="form-control" id="price" name="price">
-                </div>
-                <div class="form-group">
-                    <label for="location">Location:</label>
-                    <input type="text" class="form-control" id="location" name="location">
-                </div>
-                <button type="submit" class="btn btn-primary">Search</button>
-            </form>
+  <div class="row">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+      <h1>Search Products</h1>
+      <form action="/product/searchp" method="GET">
+        <div class="form-group">
+          <label for="brand">Brand:</label>
+          <input type="text" class="form-control" id="brand" name="brand" />
         </div>
+        <div class="form-group">
+          <label for="price">Price:</label>
+          <input type="number" class="form-control" id="price" name="price" />
+        </div>
+        <div class="form-group">
+          <label for="location">Location:</label>
+          <input
+            type="text"
+            class="form-control"
+            id="location"
+            name="location"
+          />
+        </div>
+        <button type="submit" class="btn btn-primary">Search</button>
+      </form>
     </div>
+  </div>
 </div>
 
 <div class="container">
-    <div class="row">
-        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-            <h2>All Products</h2>
-            <ul class="list-group">
-                {{#each products}}
-                <li class="list-group-item">
-                    <img src="https://trialmate.s3.amazonaws.com/{{ this.photoUrl }}" alt="Product Image" class="product-image">
-                    <h4>{{this.brand}}</h4>
-                    <p><strong>Title:</strong> {{this.title}}</p>
-                    <p><strong>Description:</strong> {{this.description}}</p>
-                    <p><strong>Price:</strong> {{this.price}}</p>
-                    <p><strong>Location:</strong> {{this.location}}</p>
-                </li>
-                {{/each}}
-            </ul>
-        </div>
+  <div class="row">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+      <h2>All Products</h2>
+      <ul class="list-group">
+        {{#each products}}
+          <li class="list-group-item">
+            <div class="row">
+              <div class="col-md-9">
+                <div class="col-md-3">
+                  <div class="user-photo-container">
+                    <img
+                      src="https://trialmate.s3.amazonaws.com/{{this.user.photoUrl}}"
+                      alt="User Image"
+                      class="user-photo"
+                    />
+                  </div>
+                  <p class="username">{{this.user.username}}</p>
+                </div>
+                <div class="col-md-3">
+                  <img
+                    src="https://trialmate.s3.amazonaws.com/{{this.photoUrl}}"
+                    alt="Product Image"
+                    class="product-image"
+                  />
+                  <h4>{{this.brand}}</h4>
+                  <p><strong>Title:</strong> {{this.title}}</p>
+                  <p><strong>Description:</strong> {{this.description}}</p>
+                  <p><strong>Price:</strong> {{this.price}}</p>
+                  <p><strong>Location:</strong> {{this.location}}</p>
+                </div>
+              </div>
+              <div class="col-md-3 text-right">
+                <form action="/product/trial" method="POST">
+                  <input
+                    type="hidden"
+                    name="UserId"
+                    value="{{this.user._id}}"
+                  />
+                  <input type="hidden" name="Id" value="{{this._id}}" />
+                  <input type="hidden" name="Brand" value="{{this.brand}}" />
+                  <input type="hidden" name="Title" value="{{this.title}}" />
+                  <input
+                    type="hidden"
+                    name="Description"
+                    value="{{this.description}}"
+                  />
+                  <input type="hidden" name="Price" value="{{this.price}}" />
+                  <input
+                    type="hidden"
+                    name="Location"
+                    value="{{this.location}}"
+                  />
+                  <input
+                    type="hidden"
+                    name="photoUrl"
+                    value="{{this.photoUrl}}"
+                  />
+                  <button type="submit" class="btn btn-success">Trial</button>
+                </form>
+              </div>
+            </div>
+          </li>
+        {{/each}}
+      </ul>
     </div>
+  </div>
 </div>

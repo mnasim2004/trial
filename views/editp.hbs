@@ -1,51 +1,97 @@
-    <style>
+<style>
 
-.current-photo {
-    max-width: 200px; /* Adjust the maximum width as needed */
-    max-height: 150px; /* Adjust the maximum height as needed */
-}
+  .current-photo { max-width: 200px; /* Adjust the maximum width as needed */
+  max-height: 150px; /* Adjust the maximum height as needed */ }
 
-    </style>
+</style>
 
 <div class="container">
-    <div class="row">
-        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-            <form action="/product/updatep/{{product._id}}" method="POST" enctype="multipart/form-data">
-                <legend>Edit Product</legend>
+  <div class="row">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+      <form
+        action="/product/updatep/{{product._id}}"
+        method="POST"
+        enctype="multipart/form-data"
+      >
+        <legend>Edit Product</legend>
 
-                <div class="form-group">
-                    <label for="brand">Brand:</label>
-                    <input type="text" class="form-control" id="brand" name="brand" value="{{product.brand}}" required>
-                </div>
-
-                <div class="form-group">
-                    <label for="title">Title:</label>
-                    <input type="text" class="form-control" id="title" name="title" value="{{product.title}}" required>
-                </div>
-
-                <div class="form-group">
-                    <label for="description">Description:</label>
-                    <textarea class="form-control" id="description" name="description" required>{{product.description}}</textarea>
-                </div>
-
-                <div class="form-group">
-                    <label for="price">Price:</label>
-                    <input type="number" class="form-control" id="price" name="price" value="{{product.price}}" required>
-                </div>
-
-                <div class="form-group">
-                    <label for="location">Location:</label>
-                    <input type="text" class="form-control" id="location" name="location" value="{{product.location}}" required>
-                </div>
-
-                <div class="form-group">
-                    <label for="photo">Photo:</label>
-                    <input type="file" class="form-control-file" id="photo" name="photo" accept="image/jpeg">
-                    <p><strong>Current Photo:</strong> <img src="https://trialmate.s3.amazonaws.com/{{product.photoUrl}}" alt="Product Image" class="current-photo"></p>
-                </div>
-
-                <button type="submit" class="btn btn-primary">Update</button>
-            </form>
+        <div class="form-group">
+          <label for="brand">Brand:</label>
+          <input
+            type="text"
+            class="form-control"
+            id="brand"
+            name="brand"
+            value="{{product.brand}}"
+            required
+          />
         </div>
+
+        <div class="form-group">
+          <label for="title">Title:</label>
+          <input
+            type="text"
+            class="form-control"
+            id="title"
+            name="title"
+            value="{{product.title}}"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="description">Description:</label>
+          <textarea
+            class="form-control"
+            id="description"
+            name="description"
+            required
+          >{{product.description}}</textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="price">Price:</label>
+          <input
+            type="number"
+            class="form-control"
+            id="price"
+            name="price"
+            value="{{product.price}}"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="location">Location:</label>
+          <input
+            type="text"
+            class="form-control"
+            id="location"
+            name="location"
+            value="{{product.location}}"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="photo">Photo:</label>
+          <input
+            type="file"
+            class="form-control-file"
+            id="photo"
+            name="photo"
+            accept="image/jpeg"
+          />
+          <p><strong>Current Photo:</strong>
+            <img
+              src="https://trialmate.s3.amazonaws.com/{{product.photoUrl}}"
+              alt="Product Image"
+              class="current-photo"
+            /></p>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Update</button>
+      </form>
     </div>
+  </div>
 </div>
