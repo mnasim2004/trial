@@ -1,12 +1,12 @@
-require("dotenv").config();
-const express = require("express");
-const multer = require("multer");
-const { s3Uploadv2, s3Uploadv3 } = require("../s3Service");
-const uuid = require("uuid").v4;
+require('dotenv').config();
+const express = require('express');
+const multer = require('multer');
+const { s3Uploadv2, s3Uploadv3 } = require('../s3Service');
+const uuid = require('uuid').v4;
 var router = express.Router();
 
-router.get("/addp", function (req, res, next) {
-  res.render("product.hbs", { title: "Example" });
+router.get('/addp', function (req, res, next) {
+  res.render('product.hbs', { title: 'Example' });
 });
 //single file upload
 // const upload = multer({ dest: "uploads/" });
@@ -47,10 +47,10 @@ router.get("/addp", function (req, res, next) {
 const storage = multer.memoryStorage();
 
 const fileFilter = (req, file, cb) => {
-  if (file.mimetype.split("/")[0] === "image") {
+  if (file.mimetype.split('/')[0] === 'image') {
     cb(null, true);
   } else {
-    cb(new multer.MulterError("LIMIT_UNEXPECTED_FILE"), false);
+    cb(new multer.MulterError('LIMIT_UNEXPECTED_FILE'), false);
   }
 };
 
@@ -81,7 +81,7 @@ const upload = multer({
 //   }
 // });
 
-router.post("/upload", upload.array("file"), async (req, res) => {
+router.post('/upload', upload.array('file'), async (req, res) => {
   try {
     const keys = await s3Uploadv2(req.files);
     console.log(keys[0]); // Log the array of generated keys
@@ -98,30 +98,30 @@ router.post("/upload", upload.array("file"), async (req, res) => {
 
     // await newProduct.save();
 
-    return res.json({ status: "success" });
+    return res.json({ status: 'success' });
   } catch (err) {
     console.log(err);
-    return res.status(500).json({ error: "Internal server error" });
+    return res.status(500).json({ error: 'Internal server error' });
   }
 });
 
 router.use((error, req, res, next) => {
   if (error instanceof multer.MulterError) {
-    if (error.code === "LIMIT_FILE_SIZE") {
+    if (error.code === 'LIMIT_FILE_SIZE') {
       return res.status(400).json({
-        message: "file is too large",
+        message: 'file is too large',
       });
     }
 
-    if (error.code === "LIMIT_FILE_COUNT") {
+    if (error.code === 'LIMIT_FILE_COUNT') {
       return res.status(400).json({
-        message: "File limit reached",
+        message: 'File limit reached',
       });
     }
 
-    if (error.code === "LIMIT_UNEXPECTED_FILE") {
+    if (error.code === 'LIMIT_UNEXPECTED_FILE') {
       return res.status(400).json({
-        message: "File must be an image",
+        message: 'File must be an image',
       });
     }
   }

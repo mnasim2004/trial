@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
 const userSchema = new mongoose.Schema({
   username: {
@@ -32,9 +32,9 @@ const userSchema = new mongoose.Schema({
   },
   photoUrl: {
     type: String,
-    default: "user/images.png", // Add userUrl field for profile photo URL
+    default: 'user/images.png', // Add userUrl field for profile photo URL
   },
 });
-const User = mongoose.model("User", userSchema);
+const User = mongoose.model('User', userSchema);
 
 module.exports = User;

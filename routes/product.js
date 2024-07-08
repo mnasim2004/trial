@@ -1,11 +1,13 @@
-require("dotenv").config();
-const express = require("express");
-const multer = require("multer");
-const { s3Upload } = require("../s3Service");
-const uuid = require("uuid").v4;
-const Product = require("../model/product_model");
+require('dotenv').config();
+const express = require('express');
+const multer = require('multer');
+const { s3Upload } = require('../s3Service');
+const uuid = require('uuid').v4;
+const User = require('../model/user_model');
+const Product = require('../model/product_model');
 
-const Trial = require("../model/trial_model"); // Import the Trial model
+const Trial = require('../model/trial_model'); // Import the Trial model
+const session = require('express-session');
 const router = express.Router();
 
 const storage = multer.memoryStorage();
@@ -14,16 +16,18 @@ const upload = multer({
   storage,
 });
 
-router.get("/addp", function (req, res, next) {
-  res.render("product.hbs", { title: "Example" });
+router.get('/addp', function (req, res, next) {
+  res.render('product.hbs', { title: 'Example' });
 });
 
-router.post("/upload", upload.any(), async (req, res) => {
+router.post('/upload', upload.any(), async (req, res) => {
   try {
     let user = req.session.user;
-    const ObjectId = require("mongoose").Types.ObjectId;
+    let userId = req.session.user;
+    const ObjectId = require('mongoose').Types.ObjectId;
     const userObjectId = new ObjectId(user);
     var keys = await s3Upload(req.files);
+    const user_data = await User.findById(userId);
     console.log(keys);
     const newProduct = new Product({
       user: user,
@@ -37,28 +41,28 @@ router.post("/upload", upload.any(), async (req, res) => {
 
     await newProduct.save();
 
-    res.redirect(`/users/${userObjectId}`);
+    res.redirect(`/users/dashboard`);
   } catch (err) {
     console.log(err);
-    return res.status(500).json({ error: "Internal server error" });
+    return res.status(500).json({ error: 'Internal server error' });
   }
 });
 
-router.get("/searchp", async function (req, res, next) {
+router.get('/searchp', async function (req, res, next) {
   try {
     let userId = req.session.user; // Get the user ID to exclude from the query
     const { brand, price, location, user } = req.query;
-
+    const user_data = await User.findById(userId);
     // Construct the MongoDB query based on the provided search criteria
     const query = {};
     if (brand) {
-      query.brand = brand;
+      query.title = { $regex: brand, $options: 'i' }; // 'i' for case-insensitive
     }
     if (price) {
       query.price = price;
     }
     if (location) {
-      query.location = location;
+      query.location = { $regex: location, $options: 'i' };
     }
     if (userId) {
       query.user = { $ne: userId }; // Add condition to exclude specific user ID
@@ -68,16 +72,21 @@ router.get("/searchp", async function (req, res, next) {
 
     // Fetch all products from the database excluding the specified user ID
     const products = await Product.find(query).populate(
-      "user",
-      "username photoUrl",
+      'user',
+      'username photoUrl'
     ); // Populate the 'user' field with 'username' only
     console.log(products);
-    res.render("searchp.hbs", { products });
+    res.render('searchp.hbs', {
+      session:req.session,
+      products,
+      user_data,
+    });
   } catch (err) {
     next(err);
   }
 });
-router.get("/editp/:id", async function (req, res, next) {
+
+router.get('/editp/:id', async function (req, res, next) {
   try {
     // Retrieve the product ID from the request parameters
     const productId = req.params.id;
@@ -86,17 +95,17 @@ router.get("/editp/:id", async function (req, res, next) {
     const product = await Product.findById(productId);
 
     // Render the editp.hbs template and pass the product details to it
-    res.render("editp.hbs", { product: product });
+    res.render('editp.hbs', { product: product });
   } catch (err) {
     // Handle errors
     next(err);
   }
 });
-router.post("/updatep/:id", upload.any(), async function (req, res, next) {
+router.post('/updatep/:id', upload.any(), async function (req, res, next) {
   try {
     let userId = req.session.user;
 
-    const ObjectId = require("mongoose").Types.ObjectId;
+    const ObjectId = require('mongoose').Types.ObjectId;
     const userObjectId = new ObjectId(userId);
 
     const productId = req.params.id;
@@ -133,8 +142,13 @@ router.post("/updatep/:id", upload.any(), async function (req, res, next) {
   }
 });
 
-router.post("/trial", function (req, res, next) {
-  res.render("trial.hbs", {
+router.post('/trial', async function (req, res, next) {
+  console.log(req.session.loggedIn);
+  let userId = req.session.user;
+  // console.log(userId);
+  const user_data = await User.findById(userId);
+  res.render('trial.hbs', {
+    session:req.session,
     puserId: req.body.UserId,
     pId: req.body.Id,
     brand: req.body.Brand,
@@ -143,15 +157,60 @@ router.post("/trial", function (req, res, next) {
     price: req.body.Price,
     location: req.body.Location,
     photoUrl: req.body.photoUrl,
+    loggedIn: req.session.loggedIn ,
+    user_data,
   });
   console.log(req.body);
 });
 
-router.post("/book", async function (req, res, next) {
+
+router.post('/trials/:id/accept', async function(req, res, next){
+  try {
+    const trialId = req.params.id;
+    await Trial.findByIdAndUpdate(trialId, { status: 'Accepted' });
+    res.json({ success: true });
+  } catch (err) {
+    next(err);
+  }
+});
+// Route to reject a trial
+router.post('/trials/:id/reject', async function(req, res, next){
+  try {
+    const trialId = req.params.id;
+    await Trial.findByIdAndUpdate(trialId, { status: 'Rejected' });
+    res.json({ success: true });
+  } catch (err) {
+    next(err);
+  }
+});
+router.post('/trials/:id/paid', async function(req, res, next){
+  try {
+    const trialId = req.params.id;
+    await Trial.findByIdAndUpdate(trialId, { status: 'Payment Done' });
+    await new Promise((resolve) => setTimeout(resolve, 10000));
+    res.json({ success: true });
+  } catch (err) {
+    next(err);
+  }
+});
+
+router.post('/trials/:id/cancel', async function(req, res, next){
+  try {
+    const trialId = req.params.id;
+    await Trial.findByIdAndUpdate(trialId, { status: 'Cancelled' });
+    res.json({ success: true });
+  } catch (err) {
+    next(err);
+  }
+});
+
+
+
+router.post('/book', async function (req, res, next) {
   try {
     let userId = req.session.user;
 
-    const ObjectId = require("mongoose").Types.ObjectId;
+    const ObjectId = require('mongoose').Types.ObjectId;
     const userObjectId = new ObjectId(userId);
     console.log(req.body);
     const {
@@ -185,34 +244,48 @@ router.post("/book", async function (req, res, next) {
     await trial.save();
 
     // Redirect the user to a success page or any other appropriate page
-    res.redirect(`/users/${userObjectId}`);
+    res.redirect(`/users/dashboard/`);
   } catch (err) {
     // Handle errors
     next(err);
   }
 });
 
-router.post("/delete/:id", async function (req, res, next) {
-  try {
-    // Retrieve the product ID from the request parameters
-    let userId = req.session.user;
+// router.post('/delete/:id', async function (req, res, next) {
+//   try {
+//     // Retrieve the product ID from the request parameters
+//     let userId = req.session.user;
 
-    const ObjectId = require("mongoose").Types.ObjectId;
-    const userObjectId = new ObjectId(userId);
+//     const ObjectId = require('mongoose').Types.ObjectId;
+//     const userObjectId = new ObjectId(userId);
+//     const productId = req.params.id;
+
+//     // Delete the product from the database
+//     await Product.findByIdAndDelete(productId);
+
+//     // Redirect the user to a relevant page after successful deletion
+//     res.redirect(`/users/dashboard/`); // Redirect to the products page or any other appropriate page
+//   } catch (err) {
+//     // Handle errors
+//     next(err);
+//   }
+// });
+router.post('/delete/:id', async function (req, res, next) {
+  try {
     const productId = req.params.id;
 
     // Delete the product from the database
     await Product.findByIdAndDelete(productId);
 
     // Redirect the user to a relevant page after successful deletion
-    res.redirect(`/users/${userObjectId}`); // Redirect to the products page or any other appropriate page
+    res.redirect('/users/dashboard'); // Redirect to the user's dashboard or any other appropriate page
   } catch (err) {
     // Handle errors
     next(err);
   }
 });
 
-router.get("/editt/:id", async function (req, res, next) {
+router.get('/editt/:id', async function (req, res, next) {
   try {
     // Retrieve the product ID from the request parameters
     const trialId = req.params.id;
@@ -221,19 +294,19 @@ router.get("/editt/:id", async function (req, res, next) {
     const trial = await Trial.findById(trialId);
 
     // Render the editp.hbs template and pass the product details to it
-    res.render("editt.hbs", { trial });
+    res.render('editt.hbs', { trial });
   } catch (err) {
     // Handle errors
     next(err);
   }
 });
 
-router.post("/tdelete/:id", async function (req, res, next) {
+router.post('/tdelete/:id', async function (req, res, next) {
   try {
     // Retrieve the product ID from the request parameters
     let userId = req.session.user;
 
-    const ObjectId = require("mongoose").Types.ObjectId;
+    const ObjectId = require('mongoose').Types.ObjectId;
     const userObjectId = new ObjectId(userId);
     const trialId = req.params.id;
 
@@ -248,11 +321,11 @@ router.post("/tdelete/:id", async function (req, res, next) {
   }
 });
 
-router.post("/updatet/:id", async function (req, res, next) {
+router.post('/updatet/:id', async function (req, res, next) {
   try {
     let userId = req.session.user;
 
-    const ObjectId = require("mongoose").Types.ObjectId;
+    const ObjectId = require('mongoose').Types.ObjectId;
     const userObjectId = new ObjectId(userId);
     const trialId = req.params.id;
 

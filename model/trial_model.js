@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
 // Define schema
 const trialSchema = new mongoose.Schema({
@@ -12,17 +12,17 @@ const trialSchema = new mongoose.Schema({
   },
   userId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "User", // Reference to the User model
+    ref: 'User', // Reference to the User model
     required: true,
   },
   productId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "Product", // Reference to the Product model
+    ref: 'Product', // Reference to the Product model
     required: true,
   },
   productUserId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "User", // Reference to the User who owns the product
+    ref: 'User', // Reference to the User who owns the product
     required: true,
   },
   brand: {
@@ -51,12 +51,12 @@ const trialSchema = new mongoose.Schema({
   },
   status: {
     type: String,
-    enum: ["Pending", "Accepted", "Rejected"], // Status can be one of these values
-    default: "Pending", // Default status is pending
+    enum: ['Pending', 'Accepted', 'Rejected','Payment Done','Successful','Cancelled'], // Status can be one of these values
+    default: 'Pending', // Default status is pending
   },
 });
 
 // Create model
-const Trial = mongoose.model("Trial", trialSchema);
+const Trial = mongoose.model('Trial', trialSchema);
 
 module.exports = Trial;
