@@ -1,0 +1,367 @@
+<script src="https://jsuites.net/v4/jsuites.js"></script>
+<script src="https://jsuites.net/v4/jsuites.webcomponents.js"></script>
+<link rel="stylesheet" href="https://jsuites.net/v4/jsuites.css" type="text/css" />
+<style>
+    .jrating {
+        display: flex;
+    }
+
+    .jrating>div {
+        width: 24px;
+        height: 24px;
+        line-height: 24px;
+        background-image: url("data:image/svg+xml,%0A%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath d='M22 9.24l-7.19-.62L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21 12 17.27 18.18 21l-1.63-7.03L22 9.24zM12 15.4l-3.76 2.27 1-4.28-3.32-2.88 4.38-.38L12 6.1l1.71 4.04 4.38.38-3.32 2.88 1 4.28L12 15.4z' fill='gray'/%3E%3Cpath d='M0 0h24v24H0z' fill='none'/%3E%3C/svg%3E");
+    }
+
+    .jrating .jrating-over {
+        background-image: url("data:image/svg+xml,%0A%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='yellow'%3E%3Cpath d='M0 0h24v24H0z' fill='none'/%3E%3Cpath d='M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z'/%3E%3Cpath d='M0 0h24v24H0z' fill='none'/%3E%3C/svg%3E");
+        opacity: 0.7;
+    }
+
+    .jrating .jrating-selected {
+        background-image: url("data:image/svg+xml,%0A%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='gold'%3E%3Cpath d='M0 0h24v24H0z' fill='none'/%3E%3Cpath d='M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z'/%3E%3Cpath d='M0 0h24v24H0z' fill='none'/%3E%3C/svg%3E");
+    }
+</style>
+
+<button data-drawer-target="separator-sidebar" data-drawer-toggle="separator-sidebar" aria-controls="separator-sidebar"
+    type="button"
+    class="inline-flex items-center p-2 mt-2 ms-3 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
+    <span class="sr-only">Open sidebar</span>
+    <svg class="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+        <path clip-rule="evenodd" fill-rule="evenodd"
+            d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10z">
+        </path>
+    </svg>
+</button>
+
+<aside id="separator-sidebar"
+    class="fixed top-0 bg-gray-900 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0"
+    aria-label="Sidebar">
+    <div class="h-full px-3 py-4 overflow-y-auto  dark:bg-gray-800">
+        <ul class="space-y-2 font-medium">
+            <li>
+                <a href="/users" class="text-center flex items-center ps-2.5 mb-5">
+                    <span class="self-center text-xl font-semibold whitespace-nowrap text-white">Trial Mate</span>
+                </a>
+            </li>
+            <li>
+                {{#if session.loggedIn}}
+                <div class="bg-gray-800  gap-1 p-4 rounded-t-lg flex flex-col items-center ">
+                    <img class=" w-12 h-12 rounded-full shadow-lg"
+                        src="https://trialmate.s3.amazonaws.com/{{ user_data.photoUrl }}" alt="Profile" />
+                    <div class=" text-center">
+                        <h5 class=" text-md font-medium text-white dark:text-white">{{ user_data.name }}</h5>
+                        <span class="text-xs text-gray-200 dark:text-gray-400">{{ user_data.username }}</span>
+                    </div>
+                </div>
+                {{/if}}
+            </li>
+            <div class="bg-gray-800">
+                <li>
+                    <a href="/users/dashboard"
+                        class="flex text-white items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                        <svg class="w-5 h-5 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
+                            aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+                            viewBox="0 0 22 21">
+                            <path
+                                d="M16.975 11H10V4.025a1 1 0 0 0-1.066-.998 8.5 8.5 0 1 0 9.039 9.039.999.999 0 0 0-1-1.066h.002Z" />
+                            <path
+                                d="M12.5 0c-.157 0-.311.01-.565.027A1 1 0 0 0 11 1.02V10h8.975a1 1 0 0 0 1-.935c.013-.188.028-.374.028-.565A8.51 8.51 0 0 0 12.5 0Z" />
+                        </svg>
+                        <span class="group-hover:text-gray-900 ms-3">Dashboard</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/product/searchp"
+                        class="flex text-white items-center p-2 text-gray-900 bg-gray-400  rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                        <svg class="w-5 h-5  transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
+                            aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+                            viewBox="0 0 18 20">
+                            <path
+                                d="M17 5.923A1 1 0 0 0 16 5h-3V4a4 4 0 1 0-8 0v1H2a1 1 0 0 0-1 .923L.086 17.846A2 2 0 0 0 2.08 20h13.84a2 2 0 0 0 1.994-2.153L17 5.923ZM7 9a1 1 0 0 1-2 0V7h2v2Zm0-5a2 2 0 1 1 4 0v1H7V4Zm6 5a1 1 0 1 1-2 0V7h2v2Z" />
+                        </svg>
+                        <span class="group-hover:text-gray-900  flex-1 ms-3 whitespace-nowrap">Search Products</span>
+                    </a>
+                </li>
+            </div>
+        </ul>
+        <ul class="pt-4 mt-4 space-y-2  font-medium border-t border-gray-200 dark:border-gray-700">
+            <li>
+                <a href="/logout"
+                    class="flex items-center bg-red-900 p-2 text-white rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                    <svg class="flex-shrink-0 w-5 h-5 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
+                        aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 16">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M1 8h11m0 0L8 4m4 4-4 4m4-11h3a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-3" />
+                    </svg>
+                    <span class="hover:text-gray-700 flex-1 ms-3 whitespace-nowrap">Logout</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+</aside>
+
+<div class="p-4 bg-gray-900 sm:ml-64">
+    <div class="p-4 bg-gray-800 border-gray-200 rounded-lg dark:border-gray-700">
+        <div class="flex flex-wrap mb-2">
+            <h2 class="text-3xl p-2 font-normal text-white">Profile</h2>
+        </div>
+        <div class="  mb-4">
+            <div class="bg-gray-700 gap-1 p-4 rounded-t-lg flex flex-col items-center ">
+                <a href="#" data-popover-target="popover-image-user">
+                    <img class="w-12 h-12 rounded-full shadow-lg"
+                        src="https://trialmate.s3.amazonaws.com/{{ user.photoUrl }}" alt="Profile" /></a>
+                <div class="text-center ">
+                    <h5 class=" text-md font-medium text-white dark:text-white">{{ user.name }}</h5>
+                    <span class="text-xs text-gray-200 dark:text-gray-400">{{ user.username }}</span>
+                </div>
+            </div>
+        </div>
+        <div data-popover id="popover-image-user" role="tooltip"
+            class="absolute p-4 z-10 invisible inline-block text-sm text-gray-500 transition-opacity duration-300 bg-white border border-gray-200 rounded-lg shadow-sm opacity-0 w-96 dark:text-gray-400 dark:bg-gray-800 dark:border-gray-600">
+            <h2 class="text-xl font-bold text-gray-900">{{user.name}}</h2>
+            <h3 class="text-lg text-gray-700">Email : {{user.email}}</h3>
+            <p class="text-gray-600">Address : {{user.address}}</p>
+            <p class="text-gray-900 font-semibold">Pincode : ${{user.pincode}}</p>
+            <p class="text-gray-500">Phone Number : {{user.phoneNumber}}</p>
+        </div>
+        <h2 class="text-3xl p-2 font-normal text-white">Products</h2>
+        <div class="grid grid-cols-4 gap-4 mb-4">
+            {{#each products}}
+            <div class="max-w-sm bg-gray-400 shadow-2xl rounded-md shadow dark:bg-gray-800 dark:border-gray-700">
+                <a href="#" data-popover-target="popover-image-{{this.id}}">
+                    <img src="https://trialmate.s3.amazonaws.com/{{ this.photoUrl }}" alt="Product Image"
+                        class="product-image bg-cover rounded-t-lg">
+                    {{!-- <image class="bg-cover h-32 rounded-t-lg"
+                        src="https://trialmate.s3.amazonaws.com/{{this.photoUrl}}"> --}}
+                </a>
+                <div class="p-5">
+                    <a href="#">
+                        <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{{this.title}}
+                        </h5>
+                    </a>
+                    <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">{{this.description}}</p>
+                </div>
+            </div>
+            <div data-popover id="popover-image-{{this.id}}" role="tooltip"
+                class="absolute p-4 z-10 invisible inline-block text-sm text-gray-500 transition-opacity duration-300 bg-white border border-gray-200 rounded-lg shadow-sm opacity-0 w-96 dark:text-gray-400 dark:bg-gray-800 dark:border-gray-600">
+                <h2 class="text-xl font-bold text-gray-900">{{this.title}}</h2>
+                <h3 class="text-lg text-gray-700">Brand : {{this.brand}}</h3>
+                <p class="text-gray-600">Description: {{this.description}}</p>
+                <p class="text-gray-900 font-semibold">Price: ${{this.price}}</p>
+                <p class="text-gray-500">Location: {{this.location}}</p>
+            </div>
+            {{/each}}
+        </div>
+        <div class=" p-4 bg-white rounded-lg grid grid-cols-1 mb-2">
+            <form action="/users/comment" method="POST" class="">
+                <jsuites-rating value="0" tooltip="Ugly, Bad, Average, Good, Outstanding"></jsuites-rating>
+                <label for="message" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your
+                    message</label>
+                <textarea id="message" rows="4" name="message"
+                    class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    placeholder="Leave a comment..."></textarea>
+                <input type="hidden" id="ratingValue" name="rating" value="">
+                <input type="hidden" id="userId" name="userId" value="{{user._id}}">
+                <button type="submit"
+                    class="mt-2 btn btn-primary text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Post</button>
+            </form>
+        </div>
+        <div class=" p-4 bg-gray-200 rounded-lg grid grid-cols-1 ">
+            {{#each ratings}}
+            <div class=" p-4 bg-white rounded-lg grid grid-cols-1 mb-2">
+                <figure class="">
+                    <div class="rating-container" data-rating="{{this.rating}}"></div>
+                    <blockquote>
+                        <p class="text-2xl font-semibold text-gray-900 dark:text-white">{{this.review}}</p>
+                    </blockquote>
+                    <figcaption class="flex items-center mt-6 space-x-3 rtl:space-x-reverse">
+                        <img class="w-6 h-6 rounded-full"
+                            src="https://trialmate.s3.amazonaws.com/{{this.wuser.photoUrl}}" alt="profile picture">
+                        <div
+                            class="flex items-center divide-x-2 rtl:divide-x-reverse divide-gray-300 dark:divide-gray-700">
+                            <cite class="pe-3 font-medium text-gray-900 dark:text-white">{{this.wuser.username}}</cite>
+                            <cite class="ps-3 text-sm text-gray-500 dark:text-gray-400">{{this.position}}</cite>
+                        </div>
+                    </figcaption>
+                </figure>
+            </div>
+            {{/each}}
+        </div>
+    </div>
+</div>
+
+<script>
+    var myModal = document.getElementById('crud-modal');
+    myModal.show();
+    // Example: Close modal programmatically
+    myModal.hide();
+</script>
+
+<script>
+    function updateStatus(trialId, action) {
+        const url = `/product/trials/${trialId}/${action}`;
+        fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    location.reload(); // Reload the page to reflect the changes
+                } else {
+                    alert('Error updating status');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    }
+</script>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+{{!--
+<script>
+    var options = {
+        "key": "rzp_test_r8qfXzaR3HB2KI", // Replace with your Razorpay Key ID
+        "amount": "1000", // Amount in paise (100 paise = 1 INR)
+        "currency": "INR",
+        "description": "AcmeCorp",
+        "prefill": {
+            "email": "gaurav.kumar@example.com",
+            "contact": "+919900000000"
+        },
+        "handler": function (response) {
+            alert('Payment successful: ' + response.razorpay_payment_id);
+            // Handle your server-side logic here
+        },
+        "theme": {
+            "color": "#3399cc"
+        }
+    };
+
+    var rzp1 = new Razorpay(options);
+
+    document.getElementById('rzp-button1').onclick = function (e) {
+        rzp1.open();
+        e.preventDefault();
+    };
+
+    // Style adjustments when Razorpay modal opens
+    rzp1.on('open', function () {
+        const iframe = document.querySelector('.razorpay-payment-button iframe');
+        const doc = iframe.contentWindow.document;
+        const style = doc.createElement('style');
+        style.textContent = `
+        body {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          height: 100vh;
+          margin: 0;
+          background-color: #f0f0f0;
+        }
+        .razorpay-payment-button input {
+          width: 100%;
+          padding: 10px;
+          border: 1px solid #ccc;
+          border-radius: 5px;
+          font-size: 16px;
+        }
+      `;
+        doc.head.appendChild(style);
+    });
+</script> --}}
+
+<script>
+    function payWithRazorpay(trialId) {
+        var options = {
+            "key": "rzp_test_r8qfXzaR3HB2KI", // Replace with your Razorpay Key ID
+            "amount": "1000", // Amount in paise (100 paise = 1 INR)
+            "currency": "INR",
+            "description": "AcmeCorp",
+            "prefill": {
+                "email": "gaurav.kumar@example.com",
+                "contact": "+919900000000"
+            },
+            "handler": {},
+            "theme": {
+                "color": "#3399cc"
+            }
+        };
+        updateStatus(trialId, 'paid');
+        var rzp1 = new Razorpay(options);
+        rzp1.open();
+    }
+
+    // Call updateStatus on successful payment
+
+    function updateStatus(trialId, action) {
+        const url = `/product/trials/${trialId}/${action}`;
+        fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    location.reload(); // Reload the page to reflect the changes
+                } else {
+                    alert('Error updating status');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    }
+</script>
+<script>
+    new Raty(document.querySelector('.demo'), {
+        // options
+    });
+
+</script>
+
+{{!--
+<script>
+    var myRating = jSuites.rating(document.getElementById('rating'), {
+        number: 5,
+        tooltip: [1, 2, 3, 4, 5],
+        onChange: updateRatingValue
+    }
+    );
+    function updateRatingValue() {
+        // Update the value in another element
+        document.getElementById('ratingValue').value = myRating.getValue();
+    }   
+</script> --}}
+
+<script>
+    document.querySelector('jsuites-rating').addEventListener('onchange', function (e) {
+        document.getElementById('ratingValue').value = this.value;
+    });
+
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        // Find all elements with the class 'rating-container'
+        const ratingContainers = document.querySelectorAll('.rating-container');
+
+        ratingContainers.forEach(container => {
+            // Get the rating value from the data-rating attribute
+            const ratingValue = container.getAttribute('data-rating');
+
+            // Initialize the jSuites rating component
+            jSuites.rating(container, {
+                value: parseInt(ratingValue),
+                tooltip: ['Very bad', 'Bad', 'Average', 'Good', 'Very good'],
+                readonly: true // Make it read-only since we're just displaying the rating
+            });
+        });
+    });
+</script>

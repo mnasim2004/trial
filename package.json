@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www"
+    "start": "node ./bin/www",
+    "format": "prettier --write \"**/*.{js,html,hbs}\""
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.537.0",
@@ -30,6 +31,7 @@
     "nodemon": "^3.1.0"
   },
   "devDependencies": {
-    "prettier": "3.3.2"
+    "prettier": "^2.0.0",
+    "prettier-plugin-handlebars": "^0.1.0"
   }
 }

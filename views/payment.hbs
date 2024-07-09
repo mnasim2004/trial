@@ -1,0 +1,50 @@
+<style>
+  body { display: flex; justify-content: center; align-items: center; height:
+  100vh; margin: 0; background: linear-gradient(to top, #012525 0%, rgb(215,
+  195, 195) 100%);; } .form-container { background-color: #ffff; display: flex;
+  flex-direction: column; align-items: center; justify-content: center;
+  padding-top: 40px; padding-right:10px; padding-left: 20px; border-radius:
+  10px; height: 400px; width: 460px; /* Adjust based on your preference */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); } .form-container label { display:
+  block; margin-bottom: 10px; } .form-container input { width: 90%; padding:
+  10px; border: 1px solid #111010; border-radius: 10px; font-size: 16px;
+  margin-bottom: 30px; } .btn-outline-dark.btn-lg { display: block; margin-top:
+  20px; height: 40px; /* Set the height */ width: 100px; /* Set the width */
+  background-color: black; /* Set the background color */ color: white; /*
+  Assuming you want the text color to contrast against the black background */
+  border: none; /* Remove the border */ border-radius: 5px; /* Optional: Add
+  rounded corners */ }
+</style>
+
+<div class="form-container">
+  <label for="">
+    <input type="text" placeholder="Name" />
+  </label>
+  <label for="">
+    <input type="email" placeholder="Email" />
+  </label>
+  <label for="">
+    <input type="text" placeholder="Phone Number" />
+  </label>
+  <button id="rzp-button1" class="btn btn-outline-dark btn-lg"><i
+      class="fas fa-money-bill"
+    ></i>
+    Pay Now</button>
+</div>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+  var options = { "key": "rzp_test_r8qfXzaR3HB2KI", // Replace with your
+  Razorpay Key ID "amount": "1000", "currency": "INR", "description": "Acme
+  Corp", "image": "example.com/image/rzp.jpg", "prefill": { "email":
+  "gaurav.kumar@example.com", "contact": "+919900000000", }, // Additional
+  options... }; var rzp1 = new Razorpay(options);
+  document.getElementById('rzp-button1').onclick = function (e) { rzp1.open();
+  e.preventDefault(); }; rzp1.on('open', function() { const iframe =
+  document.querySelector('.razorpay-payment-button iframe'); const doc =
+  iframe.contentWindow.document; const style = doc.createElement('style');
+  style.textContent = ` body { display: flex; flex-direction: column;
+  align-items: center; justify-content: center; height: 100vh; margin: 0;
+  background-color: #f0f0f0; } .razorpay-payment-button input { width: 100%;
+  padding: 10px; border: 1px solid #ccc; border-radius: 5px; font-size: 16px; }
+  `; doc.head.appendChild(style); });
+</script>

@@ -1,7 +1,7 @@
-require("dotenv").config();
-const { S3 } = require("aws-sdk");
-const { S3Client, PutObjectCommand } = require("@aws-sdk/client-s3");
-const uuid = require("uuid").v4;
+require('dotenv').config();
+const { S3 } = require('aws-sdk');
+const { S3Client, PutObjectCommand } = require('@aws-sdk/client-s3');
+const uuid = require('uuid').v4;
 
 // exports.s3Uploadv2 = async (files) => {
 //   const s3 = new S3();
@@ -46,6 +46,6 @@ exports.s3Uploadv3 = async (files) => {
   });
 
   return await Promise.all(
-    params.map((param) => s3client.send(new PutObjectCommand(param))),
+    params.map((param) => s3client.send(new PutObjectCommand(param)))
   );
 };

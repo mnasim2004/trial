@@ -1,10 +1,10 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
 // Define schema
 const productSchema = new mongoose.Schema({
   user: {
     type: mongoose.Schema.Types.ObjectId, // Changed to ObjectId type
-    ref: "User", // Reference to the User model
+    ref: 'User', // Reference to the User model
     required: true,
   },
   brand: {
@@ -34,6 +34,6 @@ const productSchema = new mongoose.Schema({
 });
 
 // Create model
-const Product = mongoose.model("Product", productSchema);
+const Product = mongoose.model('Product', productSchema);
 
 module.exports = Product;
