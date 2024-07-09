@@ -108,13 +108,22 @@
         </div>
         <div class="  mb-4">
             <div class="bg-gray-700 gap-1 p-4 rounded-t-lg flex flex-col items-center ">
-                <img class="w-12 h-12 rounded-full shadow-lg"
-                    src="https://trialmate.s3.amazonaws.com/{{ user.photoUrl }}" alt="Profile" />
+                <a href="#" data-popover-target="popover-image-user">
+                    <img class="w-12 h-12 rounded-full shadow-lg"
+                        src="https://trialmate.s3.amazonaws.com/{{ user.photoUrl }}" alt="Profile" /></a>
                 <div class="text-center ">
                     <h5 class=" text-md font-medium text-white dark:text-white">{{ user.name }}</h5>
                     <span class="text-xs text-gray-200 dark:text-gray-400">{{ user.username }}</span>
                 </div>
             </div>
+        </div>
+        <div data-popover id="popover-image-user" role="tooltip"
+            class="absolute p-4 z-10 invisible inline-block text-sm text-gray-500 transition-opacity duration-300 bg-white border border-gray-200 rounded-lg shadow-sm opacity-0 w-96 dark:text-gray-400 dark:bg-gray-800 dark:border-gray-600">
+            <h2 class="text-xl font-bold text-gray-900">{{user.name}}</h2>
+            <h3 class="text-lg text-gray-700">Email : {{user.email}}</h3>
+            <p class="text-gray-600">Address : {{user.address}}</p>
+            <p class="text-gray-900 font-semibold">Pincode : ${{user.pincode}}</p>
+            <p class="text-gray-500">Phone Number : {{user.phoneNumber}}</p>
         </div>
         <h2 class="text-3xl p-2 font-normal text-white">Products</h2>
         <div class="grid grid-cols-4 gap-4 mb-4">
