@@ -6,8 +6,7 @@ dotenv.config();
 const db = async () => {
   try {
     // Use environment variable if available, otherwise use hardcoded URI
-    const mongo_uri = process.env.MONGO_URI || 
-      "mongodb+srv://mohammednasim2004:qvwKHJUtQ0S1hZRX@trialmate.fasasom.mongodb.net/trialmate?retryWrites=true&w=majority&appName=trialmate";
+    const mongo_uri = process.env.MONGO_URI ;
     
     if (mongo_uri) {
       await mongoose.connect(mongo_uri, {
