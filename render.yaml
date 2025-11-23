@@ -3,7 +3,7 @@ services:
     name: trial-mate
     env: node
     plan: free
-    buildCommand: npm install
+    buildCommand: rm -f package-lock.json && npm install
     startCommand: npm start
     envVars:
       - key: NODE_ENV
