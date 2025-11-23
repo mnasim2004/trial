@@ -3,7 +3,7 @@ services:
     name: trial-mate
     env: node
     plan: free
-    buildCommand: npm ci || npm install
+    buildCommand: rm -rf node_modules/bcrypt/lib/binding && npm install && npm rebuild bcrypt --build-from-source
     startCommand: npm start
     envVars:
       - key: NODE_ENV
