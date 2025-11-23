@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-var bcrypt =  require('bcrypt');
+var bcrypt = require('bcryptjs');
 const User = require('../model/user_model');
 const Product = require("../model/product_model");
 const Trial = require('../model/trial_model');
