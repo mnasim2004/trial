@@ -1,340 +1,726 @@
-    {{!-- <style>
-
-.product-image {
-    max-width: 200px; /* Adjust the maximum width as needed */
-    max-height: 150px; /* Adjust the maximum height as needed */
-}
-.status-pending {
-    color: orange; /* Change color for pending status */
-}
-
-.status-accepted {
-    color: green; /* Change color for accepted status */
-}
-
-.status-rejected {
-    color: red; /* Change color for rejected status */
-}
-.user-photo-container {
-    width: 50px; /* Adjust width as needed */
-    height: 50px; /* Adjust height as needed */
-    overflow: hidden;
-    border-radius: 50%;
-    margin: 0 auto;
-}
-
-.user-photo {
-    width: 100%;
-    height: auto;
-}
-
-.username {
-    text-align: center;
-    font-size: 12px; /* Adjust font size as needed */
-    margin-top: 5px; /* Adjust top margin as needed */
-}
-
-    </style> --}}
-
-
-<button data-drawer-target="default-sidebar" data-drawer-toggle="default-sidebar" aria-controls="default-sidebar" type="button" class="inline-flex items-center p-2 mt-2 ms-3 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
-   <span class="sr-only">Open sidebar</span>
-   <svg class="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-   <path clip-rule="evenodd" fill-rule="evenodd" d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10z"></path>
-   </svg>
-</button>
-
-<aside id="default-sidebar" class="fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0" aria-label="Sidebar">
-   <div class="h-full px-3 py-4 overflow-y-auto bg-gray-50 dark:bg-gray-800">
-      <ul class="space-y-2 font-medium">
-         <li>
-            <a href="#" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
-               <svg class="w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 21">
-                  <path d="M16.975 11H10V4.025a1 1 0 0 0-1.066-.998 8.5 8.5 0 1 0 9.039 9.039.999.999 0 0 0-1-1.066h.002Z"/>
-                  <path d="M12.5 0c-.157 0-.311.01-.565.027A1 1 0 0 0 11 1.02V10h8.975a1 1 0 0 0 1-.935c.013-.188.028-.374.028-.565A8.51 8.51 0 0 0 12.5 0Z"/>
-               </svg>
-               <span class="ms-3">Dashboard</span>
-            </a>
-         </li>
-         <li>
-            <a href="#" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
-               <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 18">
-                  <path d="M6.143 0H1.857A1.857 1.857 0 0 0 0 1.857v4.286C0 7.169.831 8 1.857 8h4.286A1.857 1.857 0 0 0 8 6.143V1.857A1.857 1.857 0 0 0 6.143 0Zm10 0h-4.286A1.857 1.857 0 0 0 10 1.857v4.286C10 7.169 10.831 8 11.857 8h4.286A1.857 1.857 0 0 0 18 6.143V1.857A1.857 1.857 0 0 0 16.143 0Zm-10 10H1.857A1.857 1.857 0 0 0 0 11.857v4.286C0 17.169.831 18 1.857 18h4.286A1.857 1.857 0 0 0 8 16.143v-4.286A1.857 1.857 0 0 0 6.143 10Zm10 0h-4.286A1.857 1.857 0 0 0 10 11.857v4.286c0 1.026.831 1.857 1.857 1.857h4.286A1.857 1.857 0 0 0 18 16.143v-4.286A1.857 1.857 0 0 0 16.143 10Z"/>
-               </svg>
-               <span class="flex-1 ms-3 whitespace-nowrap">Kanban</span>
-               <span class="inline-flex items-center justify-center px-2 ms-3 text-sm font-medium text-gray-800 bg-gray-100 rounded-full dark:bg-gray-700 dark:text-gray-300">Pro</span>
-            </a>
-         </li>
-         <li>
-            <a href="#" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
-               <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                  <path d="m17.418 3.623-.018-.008a6.713 6.713 0 0 0-2.4-.569V2h1a1 1 0 1 0 0-2h-2a1 1 0 0 0-1 1v2H9.89A6.977 6.977 0 0 1 12 8v5h-2V8A5 5 0 1 0 0 8v6a1 1 0 0 0 1 1h8v4a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1v-4h6a1 1 0 0 0 1-1V8a5 5 0 0 0-2.582-4.377ZM6 12H4a1 1 0 0 1 0-2h2a1 1 0 0 1 0 2Z"/>
-               </svg>
-               <span class="flex-1 ms-3 whitespace-nowrap">Inbox</span>
-               <span class="inline-flex items-center justify-center w-3 h-3 p-3 ms-3 text-sm font-medium text-blue-800 bg-blue-100 rounded-full dark:bg-blue-900 dark:text-blue-300">3</span>
-            </a>
-         </li>
-         <li>
-            <a href="#" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
-               <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 18">
-                  <path d="M14 2a3.963 3.963 0 0 0-1.4.267 6.439 6.439 0 0 1-1.331 6.638A4 4 0 1 0 14 2Zm1 9h-1.264A6.957 6.957 0 0 1 15 15v2a2.97 2.97 0 0 1-.184 1H19a1 1 0 0 0 1-1v-1a5.006 5.006 0 0 0-5-5ZM6.5 9a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9ZM8 10H5a5.006 5.006 0 0 0-5 5v2a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-2a5.006 5.006 0 0 0-5-5Z"/>
-               </svg>
-               <span class="flex-1 ms-3 whitespace-nowrap">Users</span>
-            </a>
-         </li>
-         <li>
-            <a href="#" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
-               <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 20">
-                  <path d="M17 5.923A1 1 0 0 0 16 5h-3V4a4 4 0 1 0-8 0v1H2a1 1 0 0 0-1 .923L.086 17.846A2 2 0 0 0 2.08 20h13.84a2 2 0 0 0 1.994-2.153L17 5.923ZM7 9a1 1 0 0 1-2 0V7h2v2Zm0-5a2 2 0 1 1 4 0v1H7V4Zm6 5a1 1 0 1 1-2 0V7h2v2Z"/>
-               </svg>
-               <span class="flex-1 ms-3 whitespace-nowrap">Products</span>
-            </a>
-         </li>
-         <li>
-            <a href="#" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
-               <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 16">
-                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 8h11m0 0L8 4m4 4-4 4m4-11h3a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-3"/>
-               </svg>
-               <span class="flex-1 ms-3 whitespace-nowrap">Sign In</span>
-            </a>
-         </li>
-         <li>
-            <a href="#" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
-               <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                  <path d="M5 5V.13a2.96 2.96 0 0 0-1.293.749L.879 3.707A2.96 2.96 0 0 0 .13 5H5Z"/>
-                  <path d="M6.737 11.061a2.961 2.961 0 0 1 .81-1.515l6.117-6.116A4.839 4.839 0 0 1 16 2.141V2a1.97 1.97 0 0 0-1.933-2H7v5a2 2 0 0 1-2 2H0v11a1.969 1.969 0 0 0 1.933 2h12.134A1.97 1.97 0 0 0 16 18v-3.093l-1.546 1.546c-.413.413-.94.695-1.513.81l-3.4.679a2.947 2.947 0 0 1-1.85-.227 2.96 2.96 0 0 1-1.635-3.257l.681-3.397Z"/>
-                  <path d="M8.961 16a.93.93 0 0 0 .189-.019l3.4-.679a.961.961 0 0 0 .49-.263l6.118-6.117a2.884 2.884 0 0 0-4.079-4.078l-6.117 6.117a.96.96 0 0 0-.263.491l-.679 3.4A.961.961 0 0 0 8.961 16Zm7.477-9.8a.958.958 0 0 1 .68-.281.961.961 0 0 1 .682 1.644l-.315.315-1.36-1.36.313-.318Zm-5.911 5.911 4.236-4.236 1.359 1.359-4.236 4.237-1.7.339.341-1.699Z"/>
-               </svg>
-               <span class="flex-1 ms-3 whitespace-nowrap">Sign Up</span>
-            </a>
-         </li>
-      </ul>
-   </div>
-</aside>
-{{!-- 
-<div class="p-4 sm:ml-64">
-   <div class="p-4 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700">
-      <div class="grid grid-cols-3 gap-4 mb-4">
-         <div class="flex items-center justify-center h-24 rounded bg-gray-50 dark:bg-gray-800">
-            <p class="text-2xl text-gray-400 dark:text-gray-500">
-               <svg class="w-3.5 h-3.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
-                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16"/>
-               </svg>
-            </p>
-         </div>
-         <div class="flex items-center justify-center h-24 rounded bg-gray-50 dark:bg-gray-800">
-            <p class="text-2xl text-gray-400 dark:text-gray-500">
-               <svg class="w-3.5 h-3.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
-                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16"/>
-               </svg>
-            </p>
-         </div>
-         <div class="flex items-center justify-center h-24 rounded bg-gray-50 dark:bg-gray-800">
-            <p class="text-2xl text-gray-400 dark:text-gray-500">
-               <svg class="w-3.5 h-3.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
-                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16"/>
-               </svg>
-            </p>
-         </div>
-      </div>
-      <div class="flex items-center justify-center h-48 mb-4 rounded bg-gray-50 dark:bg-gray-800">
-         <p class="text-2xl text-gray-400 dark:text-gray-500">
-            <svg class="w-3.5 h-3.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
-               <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16"/>
-            </svg>
-         </p>
-      </div>
-      <div class="grid grid-cols-2 gap-4 mb-4">
-         <div class="flex items-center justify-center rounded bg-gray-50 h-28 dark:bg-gray-800">
-            <p class="text-2xl text-gray-400 dark:text-gray-500">
-               <svg class="w-3.5 h-3.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
-                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16"/>
-               </svg>
-            </p>
-         </div>
-         <div class="flex items-center justify-center rounded bg-gray-50 h-28 dark:bg-gray-800">
-            <p class="text-2xl text-gray-400 dark:text-gray-500">
-               <svg class="w-3.5 h-3.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
-                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16"/>
-               </svg>
-            </p>
-         </div>
-         <div class="flex items-center justify-center rounded bg-gray-50 h-28 dark:bg-gray-800">
-            <p class="text-2xl text-gray-400 dark:text-gray-500">
-               <svg class="w-3.5 h-3.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
-                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16"/>
-               </svg>
-            </p>
-         </div>
-         <div class="flex items-center justify-center rounded bg-gray-50 h-28 dark:bg-gray-800">
-            <p class="text-2xl text-gray-400 dark:text-gray-500">
-               <svg class="w-3.5 h-3.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
-                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16"/>
-               </svg>
-            </p>
-         </div>
-      </div>
-      <div class="flex items-center justify-center h-48 mb-4 rounded bg-gray-50 dark:bg-gray-800">
-         <p class="text-2xl text-gray-400 dark:text-gray-500">
-            <svg class="w-3.5 h-3.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
-               <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16"/>
-            </svg>
-         </p>
-      </div>
-      <div class="grid grid-cols-2 gap-4">
-         <div class="flex items-center justify-center rounded bg-gray-50 h-28 dark:bg-gray-800">
-            <p class="text-2xl text-gray-400 dark:text-gray-500">
-               <svg class="w-3.5 h-3.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
-                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16"/>
-               </svg>
-            </p>
-         </div>
-         <div class="flex items-center justify-center rounded bg-gray-50 h-28 dark:bg-gray-800">
-            <p class="text-2xl text-gray-400 dark:text-gray-500">
-               <svg class="w-3.5 h-3.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
-                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16"/>
-               </svg>
-            </p>
-         </div>
-         <div class="flex items-center justify-center rounded bg-gray-50 h-28 dark:bg-gray-800">
-            <p class="text-2xl text-gray-400 dark:text-gray-500">
-               <svg class="w-3.5 h-3.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
-                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16"/>
-               </svg>
-            </p>
-         </div>
-         <div class="flex items-center justify-center rounded bg-gray-50 h-28 dark:bg-gray-800">
-            <p class="text-2xl text-gray-400 dark:text-gray-500">
-               <svg class="w-3.5 h-3.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
-                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16"/>
-               </svg>
-            </p>
-         </div>
-      </div>
-   </div>
-</div>
-
- --}}
-
-
-{{!-- <div class="container">
-    <div class="row">
-        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-            <div class="d-flex justify-content-between align-items-center mb-3">
-                <h1>User Details</h1>
-                <a href="/users/logout" class="btn btn-danger">Logout</a>
+<!-- Dashboard Header -->
+<div class="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
+   <!-- Top Navigation Bar -->
+   <nav class="bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 shadow-2xl border-b border-purple-300">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+         <div class="flex items-center justify-between h-20">
+            <div class="flex items-center space-x-4">
+               <a href="/" class="flex items-center space-x-3 group">
+                  <div
+                     class="w-12 h-12 bg-white/20 backdrop-blur-md rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+                     <span class="text-white font-bold text-lg">TM</span>
+                  </div>
+                  <div>
+                     <span class="text-2xl font-bold text-white">Trial Mate</span>
+                     <p class="text-xs text-purple-100">Dashboard</p>
+                  </div>
+               </a>
             </div>
-            <ul>
-                <img src="https://trialmate.s3.amazonaws.com/{{ user.photoUrl }}" alt="Product Image" class="product-image">
-                <li><strong>Username:</strong> {{ user.username }}</li>
-                <li><strong>Name:</strong> {{ user.name }}</li>
-                <li><strong>Email:</strong> {{ user.email }}</li>
-                <li><strong>Address:</strong> {{ user.address }}</li>
-                <li><strong>Pincode:</strong> {{ user.pincode }}</li>
-                <li><strong>Phone Number:</strong> {{ user.phoneNumber }}</li>
-            </ul>
-            <!-- Add buttons -->
-            <div>
-                <a href="/product/addp" class="btn btn-primary">Add Product</a>
-                <a href="/product/searchp" class="btn btn-primary">Search Product</a>
+            <div class="flex items-center space-x-3">
+               <a href="/product/searchp"
+                  class="px-5 py-2.5 bg-white/20 backdrop-blur-md hover:bg-white/30 text-white rounded-xl transition-all font-semibold shadow-lg flex items-center space-x-2 border border-white/30">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                  </svg>
+                  <span>Browse</span>
+               </a>
+               <a href="/users/logout"
+                  class="px-5 py-2.5 bg-red-500/90 hover:bg-red-600 text-white rounded-xl transition-all font-semibold shadow-lg flex items-center space-x-2">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1">
+                     </path>
+                  </svg>
+                  <span>Logout</span>
+               </a>
             </div>
-        </div>
-    </div>
-</div>
+         </div>
+      </div>
+   </nav>
 
-<div class="container">
-    <div class="row">
-        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-            <h2>My Courses</h2>
-            <ul class="list-group">
-                {{#each products}}
-                <li class="list-group-item">
-                    <div class="course-actions text-right">
-                        <!-- Add button to select the course -->
-                        <form action="/selectCourse/{{this.course_id}}" method="POST">
-                            <button type="submit" class="btn btn-success">Select Course</button>
+   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <!-- Success/Error Messages -->
+      {{#if success}}
+      <div class="mb-6 bg-green-50 border-l-4 border-green-500 p-4 rounded-lg">
+         <div class="flex items-center">
+            <svg class="w-5 h-5 text-green-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
+               <path fill-rule="evenodd"
+                  d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                  clip-rule="evenodd"></path>
+            </svg>
+            <p class="text-sm text-green-700 font-medium">{{success}}</p>
+         </div>
+      </div>
+      {{/if}}
+
+      {{#if error}}
+      <div class="mb-6 bg-red-50 border-l-4 border-red-500 p-4 rounded-lg">
+         <div class="flex items-center">
+            <svg class="w-5 h-5 text-red-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
+               <path fill-rule="evenodd"
+                  d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                  clip-rule="evenodd"></path>
+            </svg>
+            <p class="text-sm text-red-700 font-medium">{{error}}</p>
+         </div>
+      </div>
+      {{/if}}
+
+      <!-- Welcome Section -->
+      <div
+         class="bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 rounded-3xl shadow-2xl p-8 mb-8 text-white relative overflow-hidden">
+         <div class="absolute top-0 right-0 w-64 h-64 bg-white opacity-10 rounded-full -mr-32 -mt-32 animate-pulse">
+         </div>
+         <div class="absolute bottom-0 left-0 w-48 h-48 bg-white opacity-10 rounded-full -ml-24 -mb-24 animate-pulse"
+            style="animation-delay: 1s;"></div>
+         <div class="relative z-10">
+            <div class="flex flex-col md:flex-row items-center md:items-start justify-between">
+               <div class="flex items-center space-x-6 mb-6 md:mb-0">
+                  <div
+                     class="w-28 h-28 rounded-full bg-white/20 backdrop-blur-md border-4 border-white/30 overflow-hidden shadow-2xl ring-4 ring-white/20">
+                     <img src="{{imageUrl user.photoUrl}}" alt="{{user.username}}" class="w-full h-full object-cover">
+                  </div>
+                  <div>
+                     <h1
+                        class="text-5xl font-extrabold mb-2 bg-gradient-to-r from-yellow-200 to-pink-200 bg-clip-text text-transparent">
+                        Welcome back, {{user.name}}!</h1>
+                     <p class="text-purple-100 text-xl font-medium mb-4">@{{user.username}}</p>
+                     <div class="flex flex-wrap gap-4 mt-4">
+                        <div class="flex items-center space-x-2 bg-white/10 backdrop-blur-sm px-4 py-2 rounded-lg">
+                           <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                              <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"></path>
+                              <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"></path>
+                           </svg>
+                           <span class="text-purple-50 text-sm">{{user.email}}</span>
+                        </div>
+                        <div class="flex items-center space-x-2 bg-white/10 backdrop-blur-sm px-4 py-2 rounded-lg">
+                           <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                              <path
+                                 d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z">
+                              </path>
+                           </svg>
+                           <span class="text-purple-50 text-sm">{{user.phoneNumber}}</span>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+               <div class="flex flex-col sm:flex-row gap-4">
+                  <a href="/product/addp"
+                     class="px-6 py-3.5 bg-white text-purple-600 rounded-xl font-bold hover:bg-gray-100 transition-all transform hover:scale-105 shadow-2xl flex items-center justify-center space-x-2">
+                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                     </svg>
+                     <span>Add Product</span>
+                  </a>
+                  <a href="/product/searchp"
+                     class="px-6 py-3.5 bg-white/20 backdrop-blur-md text-white border-2 border-white/30 rounded-xl font-semibold hover:bg-white/30 transition-all flex items-center space-x-2">
+                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                           d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                     </svg>
+                     <span>Search Products</span>
+                  </a>
+               </div>
+            </div>
+         </div>
+      </div>
+
+      <!-- Stats Cards -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+         <div class="bg-white rounded-2xl shadow-lg p-6 border border-gray-100 hover:shadow-xl transition-all">
+            <div class="flex items-center justify-between">
+               <div>
+                  <p class="text-gray-500 text-sm font-medium mb-1">My Products</p>
+                  <p class="text-3xl font-bold text-gray-900">{{products.length}}</p>
+               </div>
+               <div
+                  class="w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center">
+                  <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
+                  </svg>
+               </div>
+            </div>
+         </div>
+         <div class="bg-white rounded-2xl shadow-lg p-6 border border-gray-100 hover:shadow-xl transition-all">
+            <div class="flex items-center justify-between">
+               <div>
+                  <p class="text-gray-500 text-sm font-medium mb-1">My Trials</p>
+                  <p class="text-3xl font-bold text-gray-900">{{trials.length}}</p>
+               </div>
+               <div
+                  class="w-16 h-16 bg-gradient-to-br from-green-500 to-green-600 rounded-xl flex items-center justify-center">
+                  <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2">
+                     </path>
+                  </svg>
+               </div>
+            </div>
+         </div>
+         <div class="bg-white rounded-2xl shadow-lg p-6 border border-gray-100 hover:shadow-xl transition-all">
+            <div class="flex items-center justify-between">
+               <div>
+                  <p class="text-gray-500 text-sm font-medium mb-1">Trial Requests</p>
+                  <p class="text-3xl font-bold text-gray-900">{{trialRequests.length}}</p>
+               </div>
+               <div
+                  class="w-16 h-16 bg-gradient-to-br from-orange-500 to-orange-600 rounded-xl flex items-center justify-center">
+                  <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9">
+                     </path>
+                  </svg>
+               </div>
+            </div>
+         </div>
+      </div>
+
+      <!-- Active Chats Section -->
+      {{#if allUserTrials}}
+      <div class="bg-white rounded-2xl shadow-lg p-6 mb-8 border border-gray-100">
+         <div class="flex items-center justify-between mb-6">
+            <h2 class="text-2xl font-bold text-gray-900 flex items-center space-x-2">
+               <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                     d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z">
+                  </path>
+               </svg>
+               <span>Active Chats</span>
+            </h2>
+         </div>
+         <div class="space-y-3">
+            {{#each allUserTrials}}
+            {{#if this.userId}}
+            {{#if this.productUserId}}
+            <a href="/product/chat/{{this._id}}"
+               class="block bg-gradient-to-r from-purple-50 to-white rounded-xl border border-purple-200 p-4 hover:shadow-lg transition-all">
+               <div class="flex items-center justify-between">
+                  <div class="flex items-center space-x-4">
+                     <div class="w-12 h-12 rounded-full overflow-hidden bg-gray-200">
+                        {{#ifCond this.userId._id ../user._id}}
+                        <img src="{{imageUrl this.productUserId.photoUrl}}" alt="{{this.productUserId.username}}"
+                           class="w-full h-full object-cover">
+                        {{else}}
+                        <img src="{{imageUrl this.userId.photoUrl}}" alt="{{this.userId.username}}"
+                           class="w-full h-full object-cover">
+                        {{/ifCond}}
+                     </div>
+                     <div>
+                        <p class="font-semibold text-gray-900">
+                           {{#ifCond this.userId._id ../user._id}}
+                           {{this.productUserId.username}}
+                           {{else}}
+                           {{this.userId.username}}
+                           {{/ifCond}}
+                        </p>
+                        <p class="text-sm text-gray-600">{{this.brand}} - {{this.title}}</p>
+                        <p class="text-xs text-gray-500">{{this.status}}</p>
+                     </div>
+                  </div>
+                  <div class="flex items-center space-x-2">
+                     <span id="unread-{{this._id}}"
+                        class="hidden px-2 py-1 bg-red-500 text-white text-xs font-bold rounded-full">0</span>
+                     <svg class="w-5 h-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                     </svg>
+                  </div>
+               </div>
+            </a>
+            {{/if}}
+            {{/if}}
+            {{/each}}
+         </div>
+      </div>
+      {{/if}}
+
+      <!-- My Products Section -->
+      <div class="bg-white rounded-2xl shadow-lg p-6 mb-8 border border-gray-100">
+         <div class="flex items-center justify-between mb-6">
+            <h2 class="text-2xl font-bold text-gray-900 flex items-center space-x-2">
+               <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                     d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
+               </svg>
+               <span>My Products</span>
+            </h2>
+            <a href="/product/addp"
+               class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-all flex items-center space-x-2">
+               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+               </svg>
+               <span>Add Product</span>
+            </a>
+         </div>
+         {{#if products}}
+         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {{#each products}}
+            <div
+               class="bg-gradient-to-br from-gray-50 to-white rounded-xl border border-gray-200 hover:shadow-lg transition-all overflow-hidden group">
+               <div class="relative h-48 bg-gray-200 overflow-hidden">
+                  <img src="{{imageUrl this.photoUrl}}" alt="{{this.title}}"
+                     class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
+                  <div class="absolute top-2 right-2">
+                     <span
+                        class="px-3 py-1 bg-white/90 backdrop-blur-sm rounded-full text-sm font-semibold text-gray-900 shadow-lg">
+                        ₹{{this.price}}
+                     </span>
+                  </div>
+               </div>
+               <div class="p-4">
+                  <h3 class="text-lg font-bold text-gray-900 mb-1">{{this.brand}}</h3>
+                  <p class="text-gray-600 text-sm mb-2">{{this.title}}</p>
+                  <p class="text-gray-500 text-xs mb-4 line-clamp-2">{{this.description}}</p>
+                  <div class="flex items-center justify-between">
+                     <span class="text-xs text-gray-500 flex items-center space-x-1">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z">
+                           </path>
+                           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                        </svg>
+                        <span>{{this.location}}</span>
+                     </span>
+                     <div class="flex items-center space-x-2">
+                        <a href="/product/editp/{{this._id}}"
+                           class="group px-3 py-2 bg-blue-50 hover:bg-blue-100 text-blue-600 rounded-lg transition-all flex items-center justify-center space-x-1.5 border border-blue-200 hover:border-blue-300 shadow-sm hover:shadow min-h-[36px]">
+                           <svg class="w-4 h-4 group-hover:scale-110 transition-transform flex-shrink-0" fill="none"
+                              stroke="currentColor" viewBox="0 0 24 24">
+                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                 d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z">
+                              </path>
+                           </svg>
+                           <span class="text-xs font-semibold whitespace-nowrap">Edit</span>
+                        </a>
+                        <form action="/product/delete/{{this._id}}" method="POST" class="inline m-0"
+                           onsubmit="return confirm('Are you sure you want to delete this product? This action cannot be undone.');">
+                           <button type="submit"
+                              class="group px-3 py-2 bg-red-50 hover:bg-red-100 text-red-600 rounded-lg transition-all flex items-center justify-center space-x-1.5 border border-red-200 hover:border-red-300 shadow-sm hover:shadow min-h-[36px]">
+                              <svg class="w-4 h-4 group-hover:scale-110 transition-transform flex-shrink-0" fill="none"
+                                 stroke="currentColor" viewBox="0 0 24 24">
+                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">
+                                 </path>
+                              </svg>
+                              <span class="text-xs font-semibold whitespace-nowrap">Delete</span>
+                           </button>
                         </form>
-                    </div>
-                    <div class="course-info">
-                        <h4>{{this.course_name}}</h4>
-                        <p><strong>Description:</strong> {{this.description}}</p>
-                        <p><strong>Progress:</strong> {{this.progress}}%</p>
-                        <p><strong>Status:</strong> {{#if this.is_complete}}Complete{{else}}Incomplete{{/if}}</p>
-                    </div>
-                </li>
-                {{/each}}
-            </ul>
-        </div>
-    </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+            {{/each}}
+         </div>
+         {{else}}
+         <div class="text-center py-12">
+            <svg class="w-24 h-24 text-gray-300 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
+            </svg>
+            <p class="text-gray-500 text-lg mb-4">No products yet</p>
+            <a href="/product/addp"
+               class="inline-block px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-all">
+               Add Your First Product
+            </a>
+         </div>
+         {{/if}}
+      </div>
+
+      <!-- My Trials Section -->
+      <div class="bg-white rounded-2xl shadow-lg p-6 mb-8 border border-gray-100">
+         <div class="flex items-center justify-between mb-6">
+            <h2 class="text-2xl font-bold text-gray-900 flex items-center space-x-2">
+               <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                     d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2">
+                  </path>
+               </svg>
+               <span>My Trials</span>
+            </h2>
+         </div>
+         {{#if trials}}
+         <div class="space-y-4">
+            {{#each trials}}
+            <div
+               class="bg-gradient-to-r from-green-50 to-white rounded-xl border border-green-200 p-6 hover:shadow-lg transition-all">
+               <div class="flex flex-col md:flex-row gap-6">
+                  <div class="flex-shrink-0">
+                     <div class="w-32 h-32 rounded-xl overflow-hidden bg-gray-200">
+                        <img src="{{imageUrl this.photoUrl}}" alt="{{this.title}}" class="w-full h-full object-cover">
+                     </div>
+                  </div>
+                  <div class="flex-grow">
+                     <div class="flex items-start justify-between mb-3">
+                        <div>
+                           <h3 class="text-xl font-bold text-gray-900 mb-1">{{this.brand}} - {{this.title}}</h3>
+                           <p class="text-gray-600 text-sm mb-2">{{this.description}}</p>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                           <span
+                              class="px-3 py-1 bg-green-100 text-green-800 rounded-full text-xs font-semibold uppercase">
+                              {{this.status}}
+                           </span>
+                        </div>
+                     </div>
+                     <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
+                        <div class="flex items-center space-x-2 text-sm text-gray-600">
+                           <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                 d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z">
+                              </path>
+                           </svg>
+                           <span>{{this.dateString}}</span>
+                        </div>
+                        <div class="flex items-center space-x-2 text-sm text-gray-600">
+                           <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                 d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                           </svg>
+                           <span>{{this.timeSlot}}</span>
+                        </div>
+                        <div class="flex items-center space-x-2 text-sm text-gray-600">
+                           <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                 d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z">
+                              </path>
+                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                 d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                           </svg>
+                           <span>{{this.location}}</span>
+                        </div>
+                        <div class="flex items-center space-x-2 text-sm text-gray-600">
+                           <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                 d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                           </svg>
+                           <span>{{this.productUserId.username}}</span>
+                        </div>
+                     </div>
+                     <div class="flex items-center space-x-3">
+                        <a href="/product/chat/{{this._id}}"
+                           class="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg text-sm font-medium transition-all flex items-center space-x-1">
+                           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                 d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z">
+                              </path>
+                           </svg>
+                           <span>Chat</span>
+                        </a>
+                        {{#ifCond this.status "Cancelled"}}
+                        <span
+                           class="px-4 py-2 bg-gray-400 text-white rounded-lg text-sm font-medium cursor-not-allowed">
+                           Cancelled
+                        </span>
+                        {{else}}
+                        <a href="/product/editt/{{this._id}}"
+                           class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium transition-all">
+                           Reschedule
+                        </a>
+                        <button type="button" onclick="openCancelModal('{{this._id}}')"
+                           class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg text-sm font-medium transition-all">
+                           Cancel
+                        </button>
+                        {{/ifCond}}
+                     </div>
+                  </div>
+               </div>
+            </div>
+            {{/each}}
+         </div>
+         {{else}}
+         <div class="text-center py-12">
+            <svg class="w-24 h-24 text-gray-300 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2">
+               </path>
+            </svg>
+            <p class="text-gray-500 text-lg">No trials scheduled yet</p>
+            <a href="/product/searchp"
+               class="inline-block mt-4 px-6 py-3 bg-green-600 hover:bg-green-700 text-white rounded-lg font-medium transition-all">
+               Browse Products
+            </a>
+         </div>
+         {{/if}}
+      </div>
+
+      <!-- Trial Requests Section -->
+      <div class="bg-white rounded-2xl shadow-lg p-6 mb-8 border border-gray-100">
+         <div class="flex items-center justify-between mb-6">
+            <h2 class="text-2xl font-bold text-gray-900 flex items-center space-x-2">
+               <svg class="w-6 h-6 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                     d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9">
+                  </path>
+               </svg>
+               <span>Trial Requests</span>
+            </h2>
+         </div>
+         {{#if trialRequests}}
+         <div class="space-y-4">
+            {{#each trialRequests}}
+            <div
+               class="bg-gradient-to-r from-orange-50 to-white rounded-xl border border-orange-200 p-6 hover:shadow-lg transition-all">
+               <div class="flex flex-col md:flex-row gap-6">
+                  <div class="flex-shrink-0">
+                     <div class="w-32 h-32 rounded-xl overflow-hidden bg-gray-200">
+                        <img src="{{imageUrl this.photoUrl}}" alt="{{this.title}}" class="w-full h-full object-cover">
+                     </div>
+                  </div>
+                  <div class="flex-grow">
+                     <div class="flex items-start justify-between mb-3">
+                        <div>
+                           <h3 class="text-xl font-bold text-gray-900 mb-1">{{this.brand}} - {{this.title}}</h3>
+                           <p class="text-gray-600 text-sm mb-2">{{this.description}}</p>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                           <span
+                              class="px-3 py-1 bg-orange-100 text-orange-800 rounded-full text-xs font-semibold uppercase">
+                              {{this.status}}
+                           </span>
+                        </div>
+                     </div>
+                     <div class="grid grid-cols-2 md:grid-cols-3 gap-4 mb-4">
+                        <div class="flex items-center space-x-2 text-sm text-gray-600">
+                           <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                 d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z">
+                              </path>
+                           </svg>
+                           <span>{{this.dateString}}</span>
+                        </div>
+                        <div class="flex items-center space-x-2 text-sm text-gray-600">
+                           <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                 d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                           </svg>
+                           <span>{{this.timeSlot}}</span>
+                        </div>
+                        <div class="flex items-center space-x-2 text-sm text-gray-600">
+                           <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                 d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z">
+                              </path>
+                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                 d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                           </svg>
+                           <span>{{this.location}}</span>
+                        </div>
+                     </div>
+                     <div class="flex items-center justify-between">
+                        <div class="flex items-center space-x-4">
+                           {{#if this.userId}}
+                           <div class="flex items-center space-x-2 text-sm text-gray-600">
+                              <div class="w-8 h-8 rounded-full overflow-hidden bg-gray-200">
+                                 <img src="{{imageUrl this.userId.photoUrl}}" alt="{{this.userId.username}}"
+                                    class="w-full h-full object-cover">
+                              </div>
+                              <span class="font-medium">Requested by: {{this.userId.username}}</span>
+                           </div>
+                           {{else}}
+                           <div class="text-sm text-gray-500">
+                              <p>Someone requested a trial for your product</p>
+                           </div>
+                           {{/if}}
+                        </div>
+                        <div class="flex items-center space-x-3">
+                           <a href="/product/chat/{{this._id}}"
+                              class="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg text-sm font-medium transition-all flex items-center space-x-1">
+                              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z">
+                                 </path>
+                              </svg>
+                              <span>Chat</span>
+                           </a>
+                           {{#ifCond this.status "Pending"}}
+                           <form action="/product/accept-trial/{{this._id}}" method="POST" class="inline">
+                              <button type="submit"
+                                 class="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg text-sm font-medium transition-all flex items-center space-x-2">
+                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                       d="M5 13l4 4L19 7"></path>
+                                 </svg>
+                                 <span>Accept</span>
+                              </button>
+                           </form>
+                           <button type="button" onclick="openRejectModal('{{this._id}}')"
+                              class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg text-sm font-medium transition-all flex items-center space-x-2">
+                              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M6 18L18 6M6 6l12 12"></path>
+                              </svg>
+                              <span>Reject</span>
+                           </button>
+                           {{/ifCond}}
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+            {{/each}}
+         </div>
+         {{else}}
+         <div class="text-center py-12">
+            <svg class="w-24 h-24 text-gray-300 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9">
+               </path>
+            </svg>
+            <p class="text-gray-500 text-lg">No trial requests yet</p>
+         </div>
+         {{/if}}
+      </div>
+   </div>
 </div>
 
+<!-- Reject Modal -->
+<div id="rejectModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center">
+   <div class="bg-white rounded-2xl shadow-2xl p-8 max-w-md w-full mx-4">
+      <h3 class="text-2xl font-bold text-gray-900 mb-4">Reject Trial Request</h3>
+      <p class="text-gray-600 mb-6">Please provide a reason for rejecting this trial request:</p>
 
-<div class="container">
-    <div class="row">
-        <!-- Column for My Trials -->
-        <div class="col-md-12">
-            <h2>My Trials</h2>
-            <ul class="list-group">
-                <!-- Display user's trials -->
-                {{#each trials}}
-                <li class="list-group-item">
-                    <div class="trial-info">
-                        <div class="col-md-3">
-                                <div class="user-photo-container">
-                                    <img src="https://trialmate.s3.amazonaws.com/{{ this.productUserId.photoUrl }}" alt="User Image" class="user-photo">
-                                </div>
-                                <p class="username">{{ this.productUserId.username }}</p>
-                        </div>
-                        <div class="col-md-12 text-right">
-                            <!-- Cancel Button -->
-                            <form action="/product/tdelete/{{this._id}}" method="POST">
-                            <button type="submit" class="btn btn-danger">Cancel</button>
-                            </form>
-                            <!-- Reschedule Button -->
-                            <a href="/product/editt/{{this._id}}" class="btn btn-primary">Reschedule</a>
-                        </div>
-                        <img src="https://trialmate.s3.amazonaws.com/{{ this.photoUrl }}" alt="Product Image" class="product-image">
-                        <h4>{{this.brand}}</h4>
-                        <p><strong>Title:</strong> {{this.title}}</p>
-                        <p><strong>Description:</strong> {{this.description}}</p>
-                        <p><strong>Price:</strong> {{this.price}}</p>
-                        <p><strong>Location:</strong> {{this.location}}</p>
-                        <p><strong>Date:</strong> {{this.dateString}}
-                        <p><strong>Time Slot:</strong> {{this.timeSlot}}</p>
-                        <p><strong>Status:</strong> {{this.status}}</p>
-                        
-                    </div>
-                    
-                </li>
-                {{/each}}
-            </ul>
-        </div>
-    </div>
+      <form id="rejectForm" method="POST" class="space-y-4">
+         <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Reason</label>
+            <textarea name="rejectionReason" id="rejectionReason" rows="3" required
+               class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500"
+               placeholder="Enter reason for rejection..."></textarea>
+         </div>
+
+         <div class="flex space-x-4 pt-4">
+            <button type="button" onclick="closeRejectModal()"
+               class="flex-1 px-4 py-2 border-2 border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 font-medium">
+               Cancel
+            </button>
+            <button type="submit"
+               class="flex-1 px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg font-medium">
+               Reject Trial
+            </button>
+         </div>
+      </form>
+   </div>
 </div>
 
-<div class="container">
-    <div class="row">
-        <!-- Column for Trial Requests -->
-        <div class="col-md-12">
-            <h2>Trial Requests</h2>
-            <ul class="list-group">
-                <!-- Display user's trial requests -->
-                {{#each trialRequests}}
-                <li class="list-group-item">
-                    <div class="trial-info">
-                       <img src="https://trialmate.s3.amazonaws.com/{{ this.photoUrl }}" alt="Product Image" class="product-image">
-                        <h4>{{this.brand}}</h4>
-                        <p><strong>Title:</strong> {{this.title}}</p>
-                        <p><strong>Description:</strong> {{this.description}}</p>
-                        <p><strong>Price:</strong> {{this.price}}</p>
-                        <p><strong>Location:</strong> {{this.location}}</p>
-                        <p><strong>Date:</strong> {{this.dateString}}
-                        <p><strong>Time Slot:</strong> {{this.timeSlot}}</p>
-                        <p><strong>Status:</strong> {{this.status}}</p>
-                    </div>
-                </li>
-                {{/each}}
-            </ul>
-        </div>
-    </div>
-</div> --}}
+<!-- Cancel Modal -->
+<div id="cancelModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center">
+   <div class="bg-white rounded-2xl shadow-2xl p-8 max-w-md w-full mx-4">
+      <h3 class="text-2xl font-bold text-gray-900 mb-4">Cancel Trial</h3>
+      <p class="text-gray-600 mb-6">Please provide a reason for cancelling this trial:</p>
+
+      <form id="cancelForm" method="POST" class="space-y-4">
+         <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Reason <span
+                  class="text-red-500">*</span></label>
+            <select name="cancellationReason" id="cancellationReason" required
+               class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500">
+               <option value="">Select a reason</option>
+               <option value="Not interested anymore">Not interested anymore</option>
+               <option value="Change time - need different time slot">Change time - need different time slot</option>
+               <option value="Change date - need different date">Change date - need different date</option>
+               <option value="Product no longer needed">Product no longer needed</option>
+               <option value="Found alternative">Found alternative</option>
+               <option value="Other">Other</option>
+            </select>
+         </div>
+
+         <div id="otherReasonDiv" class="hidden">
+            <label class="block text-sm font-medium text-gray-700 mb-2">Please specify</label>
+            <textarea name="otherReason" id="otherReason" rows="3"
+               class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500"
+               placeholder="Enter your reason..."></textarea>
+         </div>
+
+         <div class="flex space-x-4 pt-4">
+            <button type="button" onclick="closeCancelModal()"
+               class="flex-1 px-4 py-2 border-2 border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 font-medium">
+               Close
+            </button>
+            <button type="submit"
+               class="flex-1 px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg font-medium">
+               Cancel Trial
+            </button>
+         </div>
+      </form>
+   </div>
+</div>
+
+<script>
+   function openRejectModal(trialId) {
+      document.getElementById('rejectModal').classList.remove('hidden');
+      document.getElementById('rejectForm').action = '/product/reject-trial/' + trialId;
+   }
+
+   function closeRejectModal() {
+      document.getElementById('rejectModal').classList.add('hidden');
+      document.getElementById('rejectForm').reset();
+   }
+
+   function openCancelModal(trialId) {
+      document.getElementById('cancelModal').classList.remove('hidden');
+      document.getElementById('cancelForm').action = '/product/tdelete/' + trialId;
+   }
+
+   function closeCancelModal() {
+      document.getElementById('cancelModal').classList.add('hidden');
+      document.getElementById('cancelForm').reset();
+      document.getElementById('otherReasonDiv').classList.add('hidden');
+   }
+
+   // Show other reason field if "Other" is selected
+   document.getElementById('cancellationReason').addEventListener('change', function () {
+      if (this.value === 'Other') {
+         document.getElementById('otherReasonDiv').classList.remove('hidden');
+         document.getElementById('otherReason').required = true;
+      } else {
+         document.getElementById('otherReasonDiv').classList.add('hidden');
+         document.getElementById('otherReason').required = false;
+      }
+   });
+
+   // Update form submission to include other reason if needed
+   document.getElementById('cancelForm').addEventListener('submit', function (e) {
+      const reason = document.getElementById('cancellationReason').value;
+      if (reason === 'Other') {
+         const otherReason = document.getElementById('otherReason').value;
+         if (!otherReason.trim()) {
+            e.preventDefault();
+            alert('Please specify your reason.');
+            return false;
+         }
+         // Create hidden input with combined reason
+         const hiddenInput = document.createElement('input');
+         hiddenInput.type = 'hidden';
+         hiddenInput.name = 'cancellationReason';
+         hiddenInput.value = 'Other: ' + otherReason;
+         this.appendChild(hiddenInput);
+         // Remove the original reason select
+         document.getElementById('cancellationReason').disabled = true;
+      }
+   });
+
+   // Show unread message counts
+   { { #if unreadCounts } }
+   const unreadCounts = {{{ unreadCounts }}};
+   Object.keys(unreadCounts).forEach(trialId => {
+      const count = unreadCounts[trialId];
+      if (count > 0) {
+         const badge = document.getElementById('unread-' + trialId);
+         if (badge) {
+            badge.textContent = count > 99 ? '99+' : count;
+            badge.classList.remove('hidden');
+         }
+      }
+   });
+   { {/if } }
+</script>
+
+<style>
+   .line-clamp-2 {
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+   }
+</style>

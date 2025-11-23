@@ -1,58 +1,217 @@
-<style>
-  .container { max-width: 600px; margin: 0 auto; padding: 20px; } .booking-form
-  { background-color: #f9f9f9; padding: 20px; border-radius: 5px; } .form-group
-  { margin-bottom: 20px; } label { display: block; font-weight: bold; }
-  input[type="date"], select { width: 100%; padding: 10px; border: 1px solid
-  #ccc; border-radius: 5px; } button[type="submit"] { display: block; width:
-  100%; padding: 10px; background-color: #007bff; color: #fff; border: none;
-  border-radius: 5px; cursor: pointer; } button[type="submit"]:hover {
-  background-color: #0056b3; }
-</style>
+<div class="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 py-12 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-3xl mx-auto">
+    <div class="bg-white rounded-2xl shadow-xl p-8 sm:p-10">
+      <!-- Header -->
+      <div class="text-center mb-8">
+        <a href="/users/dashboard" class="inline-flex items-center text-blue-600 hover:text-blue-700 mb-4">
+          <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18">
+            </path>
+          </svg>
+          Back to Dashboard
+        </a>
+        <div
+          class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 mb-4">
+          <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+          </svg>
+        </div>
+        <h2 class="text-3xl font-bold text-gray-900">Reschedule Trial</h2>
+        <p class="mt-2 text-sm text-gray-600">Select a new date and time for your trial</p>
+      </div>
 
-<div class="container">
-  <h1>Edit Trial</h1>
-  <form
-    action="/product/updatet/{{trial._id}}"
-    method="POST"
-    class="booking-form"
-  >
-    <!-- Hidden input fields to store trial IDs and other information -->
-    <input type="hidden" name="trialId" value="{{trial._id}}" />
-    <input type="hidden" name="productId" value="{{trial.productId}}" />
-    <input type="hidden" name="productUserId" value="{{trial.productUserId}}" />
-    <input type="hidden" name="brand" value="{{trial.brand}}" />
-    <input type="hidden" name="title" value="{{trial.title}}" />
-    <input type="hidden" name="description" value="{{trial.description}}" />
-    <input type="hidden" name="price" value="{{trial.price}}" />
-    <input type="hidden" name="location" value="{{trial.location}}" />
-    <input type="hidden" name="photoUrl" value="{{trial.photoUrl}}" />
+      {{#if isRejected}}
+      <div class="mb-6 bg-orange-50 border-l-4 border-orange-500 p-4 rounded-lg">
+        <div class="flex items-start">
+          <svg class="w-5 h-5 text-orange-500 mr-2 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd"
+              d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
+              clip-rule="evenodd"></path>
+          </svg>
+          <div>
+            <p class="text-sm font-semibold text-orange-800 mb-1">This trial was rejected</p>
+            <p class="text-sm text-orange-700">Please select a <strong>different date and time</strong> for
+              rescheduling.</p>
+          </div>
+        </div>
+      </div>
+      {{/if}}
 
-    <div class="form-group">
-      <label for="date">Date:</label>
-      <input
-        type="date"
-        id="date"
-        name="date"
-        value="{{trial.date}}"
-        required
-      />
+      {{#if error}}
+      <div class="mb-6 bg-red-50 border-l-4 border-red-500 p-4 rounded-lg">
+        <div class="flex items-center">
+          <svg class="w-5 h-5 text-red-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd"
+              d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+              clip-rule="evenodd"></path>
+          </svg>
+          <p class="text-sm text-red-700 font-medium">{{error}}</p>
+        </div>
+      </div>
+      {{/if}}
+
+      <!-- Product Info -->
+      <div class="bg-gray-50 rounded-xl p-6 mb-6 border border-gray-200">
+        <div class="flex items-center space-x-4">
+          <div class="w-24 h-24 rounded-lg overflow-hidden bg-gray-200 flex-shrink-0">
+            <img src="{{imageUrl trial.photoUrl}}" alt="{{trial.title}}" class="w-full h-full object-cover">
+          </div>
+          <div>
+            <h3 class="text-lg font-bold text-gray-900">{{trial.brand}} - {{trial.title}}</h3>
+            <p class="text-sm text-gray-600 mt-1">{{trial.description}}</p>
+            <p class="text-lg font-bold text-blue-600 mt-2">₹{{trial.price}}</p>
+          </div>
+        </div>
+      </div>
+
+      <form action="/product/updatet/{{trial._id}}" method="POST" id="reschedule-form" class="space-y-6">
+        <!-- Date Selection -->
+        <div>
+          <label for="date" class="block text-sm font-semibold text-gray-700 mb-2">
+            Select New Date <span class="text-red-500">*</span>
+          </label>
+          <div class="relative">
+            <input type="date" id="date" name="date" required
+              class="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all" />
+            <div id="date-error" class="mt-2 text-sm text-red-600 hidden"></div>
+          </div>
+        </div>
+
+        <!-- Time Slot Selection -->
+        <div>
+          <label for="timeSlot" class="block text-sm font-semibold text-gray-700 mb-2">
+            Select New Time Slot <span class="text-red-500">*</span>
+          </label>
+          <select id="timeSlot" name="timeSlot" required
+            class="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all">
+            <option value="">Choose a time slot</option>
+            <option value="9:00 AM - 10:00 AM">9:00 AM - 10:00 AM</option>
+            <option value="10:00 AM - 11:00 AM">10:00 AM - 11:00 AM</option>
+            <option value="11:00 AM - 12:00 PM">11:00 AM - 12:00 PM</option>
+            <option value="12:00 PM - 1:00 PM">12:00 PM - 1:00 PM</option>
+            <option value="1:00 PM - 2:00 PM">1:00 PM - 2:00 PM</option>
+            <option value="2:00 PM - 3:00 PM">2:00 PM - 3:00 PM</option>
+            <option value="3:00 PM - 4:00 PM">3:00 PM - 4:00 PM</option>
+            <option value="4:00 PM - 5:00 PM">4:00 PM - 5:00 PM</option>
+            <option value="5:00 PM - 6:00 PM">5:00 PM - 6:00 PM</option>
+            <option value="6:00 PM - 7:00 PM">6:00 PM - 7:00 PM</option>
+            <option value="7:00 PM - 8:00 PM">7:00 PM - 8:00 PM</option>
+            <option value="8:00 PM - 9:00 PM">8:00 PM - 9:00 PM</option>
+          </select>
+          <div id="time-error" class="mt-2 text-sm text-red-600 hidden"></div>
+          <div id="overlap-warning" class="mt-2 text-sm text-orange-600 hidden"></div>
+        </div>
+
+        <!-- Current Schedule Info -->
+        <div class="bg-blue-50 border-l-4 border-blue-500 p-4 rounded-lg">
+          <p class="text-sm font-semibold text-blue-800 mb-2">Current Schedule:</p>
+          <p class="text-sm text-blue-700">
+            <strong>Date:</strong> {{trial.dateString}}<br>
+            <strong>Time:</strong> {{trial.timeSlot}}
+          </p>
+        </div>
+
+        <!-- Buttons -->
+        <div class="flex space-x-4 pt-4">
+          <a href="/users/dashboard"
+            class="flex-1 px-6 py-3 border-2 border-gray-300 text-gray-700 rounded-xl hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-500 text-center transition-all font-semibold">
+            Cancel
+          </a>
+          <button type="submit"
+            class="flex-1 px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl hover:from-blue-700 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all transform hover:scale-105 font-semibold">
+            Reschedule Trial
+          </button>
+        </div>
+      </form>
     </div>
-    <div class="form-group">
-      <label for="timeSlot">Select Time Slot:</label>
-      <select id="timeSlot" name="timeSlot" required>
-        <option value="">Select Time Slot</option>
-        <option value="9:00 AM - 10:00 AM">9:00 AM - 10:00 AM</option>
-        <option value="10:00 AM - 11:00 AM">10:00 AM - 11:00 AM</option>
-        <option value="1:00 PM - 2:00 PM">1:00 PM - 2:00 PM</option>
-        <option value="2:00 PM - 3:00 PM">2:00 PM - 3:00 PM</option>
-        <option value="3:00 PM - 4:00 PM">3:00 PM - 4:00 PM</option>
-        <option value="4:00 PM - 5:00 PM">4:00 PM - 5:00 PM</option>
-        <option value="5:00 PM - 6:00 PM">5:00 PM - 6:00 PM</option>
-        <option value="6:00 PM - 7:00 PM">6:00 PM - 7:00 PM</option>
-        <option value="7:00 PM - 8:00 PM">7:00 PM - 8:00 PM</option>
-        <option value="8:00 PM - 9:00 PM">8:00 PM - 9:00 PM</option>
-      </select>
-    </div>
-    <button type="submit">Update</button>
-  </form>
+  </div>
 </div>
+
+<script>
+  // Get existing trials data
+  const existingTrials = {{{ existingTrials }}};
+  const oldDate = "{{trial.date}}".split('T')[0];
+  const oldTimeSlot = "{{trial.timeSlot}}";
+  const isRejected = {{ isRejected }};
+
+  // Set minimum date to today
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const minDate = today.toISOString().split('T')[0];
+
+  // Set maximum date to 3 months from today
+  const maxDate = new Date(today);
+  maxDate.setMonth(maxDate.getMonth() + 3);
+  const maxDateStr = maxDate.toISOString().split('T')[0];
+
+  document.getElementById('date').setAttribute('min', minDate);
+  document.getElementById('date').setAttribute('max', maxDateStr);
+
+  // Check for time slot overlaps and different date requirement
+  function checkReschedule() {
+    const selectedDate = document.getElementById('date').value;
+    const selectedTime = document.getElementById('timeSlot').value;
+    const dateError = document.getElementById('date-error');
+    const timeError = document.getElementById('time-error');
+    const overlapWarning = document.getElementById('overlap-warning');
+
+    // Reset errors
+    dateError.classList.add('hidden');
+    timeError.classList.add('hidden');
+    overlapWarning.classList.add('hidden');
+
+    if (!selectedDate || !selectedTime) {
+      return;
+    }
+
+    // Check if date is in the past
+    const dateObj = new Date(selectedDate);
+    if (dateObj < today) {
+      dateError.textContent = 'Please select a future date.';
+      dateError.classList.remove('hidden');
+      return;
+    }
+
+    // If rejected, require different date/time
+    if (isRejected && selectedDate === oldDate && selectedTime === oldTimeSlot) {
+      timeError.textContent = 'Please select a different date and time slot for rescheduling.';
+      timeError.classList.remove('hidden');
+      return;
+    }
+
+    // Check for overlapping trials
+    const overlap = existingTrials.find(trial => {
+      return trial.date === selectedDate && trial.timeSlot === selectedTime;
+    });
+
+    if (overlap) {
+      overlapWarning.textContent = '⚠️ You already have a trial scheduled at this date and time.';
+      overlapWarning.classList.remove('hidden');
+      return;
+    }
+  }
+
+  // Add event listeners
+  document.getElementById('date').addEventListener('change', checkReschedule);
+  document.getElementById('timeSlot').addEventListener('change', checkReschedule);
+
+  // Form submission validation
+  document.getElementById('reschedule-form').addEventListener('submit', function (e) {
+    const date = document.getElementById('date').value;
+    const time = document.getElementById('timeSlot').value;
+
+    if (!date || !time) {
+      e.preventDefault();
+      alert('Please select both date and time slot.');
+      return false;
+    }
+
+    // Final validation
+    if (isRejected && date === oldDate && time === oldTimeSlot) {
+      e.preventDefault();
+      alert('Please select a different date and time slot for rescheduling.');
+      return false;
+    }
+  });
+</script>

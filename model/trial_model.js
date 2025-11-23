@@ -51,8 +51,20 @@ const trialSchema = new mongoose.Schema({
   },
   status: {
     type: String,
-    enum: ["Pending", "Accepted", "Rejected"], // Status can be one of these values
+    enum: ["Pending", "Accepted", "Rejected", "Cancelled"], // Status can be one of these values
     default: "Pending", // Default status is pending
+  },
+  rejectionReason: {
+    type: String,
+    default: null, // Reason for rejection (if rejected by product owner)
+  },
+  cancellationReason: {
+    type: String,
+    default: null, // Reason for cancellation (if cancelled by user)
+  },
+  rescheduleRequested: {
+    type: Boolean,
+    default: false, // Flag to indicate if reschedule was requested after rejection
   },
 });
 

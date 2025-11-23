@@ -1,0 +1,31 @@
+services:
+  - type: web
+    name: trial-mate
+    env: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: IMAGE_UPLOAD_SERVICE
+        sync: false
+      - key: IMGBB_API_KEY
+        sync: false
+      - key: MONGO_URI
+        sync: false
+      - key: AWS_ACCESS_KEY_ID
+        sync: false
+        optional: true
+      - key: AWS_SECRET_ACCESS_KEY
+        sync: false
+        optional: true
+      - key: AWS_BUCKET_NAME
+        sync: false
+        optional: true
+      - key: AWS_REGION
+        sync: false
+        optional: true
+

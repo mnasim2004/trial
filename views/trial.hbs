@@ -1,56 +1,227 @@
-<style>
-  .container { max-width: 600px; margin: 0 auto; padding: 20px; } .booking-form
-  { background-color: #f9f9f9; padding: 20px; border-radius: 5px; } .form-group
-  { margin-bottom: 20px; } label { display: block; font-weight: bold; }
-  input[type="date"], select { width: 100%; padding: 10px; border: 1px solid
-  #ccc; border-radius: 5px; } button[type="submit"] { display: block; width:
-  100%; padding: 10px; background-color: #007bff; color: #fff; border: none;
-  border-radius: 5px; cursor: pointer; } button[type="submit"]:hover {
-  background-color: #0056b3; }
-</style>
+<div class="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 py-12 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-3xl mx-auto">
+    <!-- Header -->
+    <div class="text-center mb-8">
+      <a href="/product/searchp" class="inline-flex items-center text-blue-600 hover:text-blue-700 mb-4">
+        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+        </svg>
+        Back to Search
+      </a>
+      <h1 class="text-4xl font-bold text-gray-900 mb-2">Book a Trial</h1>
+      <p class="text-gray-600">Schedule a time to try this product</p>
+    </div>
 
-<div class="container">
-  <h1>Book a Trial</h1>
-  <form action="/product/book" method="POST" class="booking-form">
-    <input type="hidden" name="productUserId" value="{{puserId}}" />
-    <input type="hidden" name="productId" value="{{pId}}" />
-    <input type="hidden" name="brand" value="{{brand}}" />
-    <input type="hidden" name="title" value="{{title}}" />
-    <input type="hidden" name="description" value="{{description}}" />
-    <input type="hidden" name="price" value="{{price}}" />
-    <input type="hidden" name="location" value="{{location}}" />
-    <input type="hidden" name="photoUrl" value="{{photoUrl}}" />
-    <div class="form-group">
-      <label for="date">Date:</label>
-      <input type="date" id="date" name="date" required />
+    <!-- Product Card -->
+    <div class="bg-white rounded-2xl shadow-xl p-6 mb-8">
+      <div class="flex flex-col md:flex-row gap-6">
+        <div class="flex-shrink-0">
+          <div class="w-48 h-48 rounded-xl overflow-hidden bg-gray-200">
+            <img src="{{imageUrl photoUrl}}" alt="{{title}}" class="w-full h-full object-cover">
+          </div>
+        </div>
+        <div class="flex-grow">
+          <div class="flex items-center justify-between mb-2">
+            <span class="px-3 py-1 bg-blue-100 text-blue-800 text-sm font-semibold rounded-full">{{brand}}</span>
+            <span class="text-3xl font-bold text-gray-900">₹{{price}}</span>
+          </div>
+          <h2 class="text-2xl font-bold text-gray-900 mb-2">{{title}}</h2>
+          <p class="text-gray-600 mb-4">{{description}}</p>
+          <div class="flex items-center text-gray-500 text-sm">
+            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+            </svg>
+            {{location}}
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="form-group">
-      <label for="time">Select Time Slot:</label>
-      <select id="time" name="time" required>
-        <option value="">Select Time Slot</option>
-        <option value="9:00 AM - 10:00 AM">9:00 AM - 10:00 AM</option>
-        <option value="10:00 AM - 11:00 AM">10:00 AM - 11:00 AM</option>
-        <option value="1:00 PM - 2:00 PM">1:00 PM - 2:00 PM</option>
-        <option value="2:00 PM - 3:00 PM">2:00 PM - 3:00 PM</option>
-        <option value="3:00 PM - 4:00 PM">3:00 PM - 4:00 PM</option>
-        <option value="4:00 PM - 5:00 PM">4:00 PM - 5:00 PM</option>
-        <option value="5:00 PM - 6:00 PM">5:00 PM - 6:00 PM</option>
-        <option value="6:00 PM - 7:00 PM">6:00 PM - 7:00 PM</option>
-        <option value="7:00 PM - 8:00 PM">7:00 PM - 8:00 PM</option>
-        <option value="8:00 PM - 9:00 PM">8:00 PM - 9:00 PM</option>
-      </select>
+
+    <!-- Booking Form -->
+    <div class="bg-white rounded-2xl shadow-xl p-8">
+      {{#if error}}
+      <div class="mb-6 bg-red-50 border-l-4 border-red-500 p-4 rounded-lg">
+        <div class="flex items-center">
+          <svg class="w-5 h-5 text-red-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd"
+              d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+              clip-rule="evenodd"></path>
+          </svg>
+          <p class="text-sm text-red-700 font-medium">{{error}}</p>
+        </div>
+      </div>
+      {{/if}}
+
+      <form action="/product/book" method="POST" id="trial-form" class="space-y-6">
+        <input type="hidden" name="productUserId" value="{{puserId}}" />
+        <input type="hidden" name="productId" value="{{pId}}" />
+        <input type="hidden" name="brand" value="{{brand}}" />
+        <input type="hidden" name="title" value="{{title}}" />
+        <input type="hidden" name="description" value="{{description}}" />
+        <input type="hidden" name="price" value="{{price}}" />
+        <input type="hidden" name="location" value="{{location}}" />
+        <input type="hidden" name="photoUrl" value="{{photoUrl}}" />
+
+        <!-- Date Selection -->
+        <div>
+          <label for="date" class="block text-sm font-semibold text-gray-700 mb-2">
+            Select Date <span class="text-red-500">*</span>
+          </label>
+          <div class="relative">
+            <input type="date" id="date" name="date" required
+              class="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all" />
+            <div id="date-error" class="mt-2 text-sm text-red-600 hidden"></div>
+          </div>
+        </div>
+
+        <!-- Time Slot Selection -->
+        <div>
+          <label for="time" class="block text-sm font-semibold text-gray-700 mb-2">
+            Select Time Slot <span class="text-red-500">*</span>
+          </label>
+          <select id="time" name="time" required
+            class="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all">
+            <option value="">Choose a time slot</option>
+            <option value="9:00 AM - 10:00 AM">9:00 AM - 10:00 AM</option>
+            <option value="10:00 AM - 11:00 AM">10:00 AM - 11:00 AM</option>
+            <option value="11:00 AM - 12:00 PM">11:00 AM - 12:00 PM</option>
+            <option value="12:00 PM - 1:00 PM">12:00 PM - 1:00 PM</option>
+            <option value="1:00 PM - 2:00 PM">1:00 PM - 2:00 PM</option>
+            <option value="2:00 PM - 3:00 PM">2:00 PM - 3:00 PM</option>
+            <option value="3:00 PM - 4:00 PM">3:00 PM - 4:00 PM</option>
+            <option value="4:00 PM - 5:00 PM">4:00 PM - 5:00 PM</option>
+            <option value="5:00 PM - 6:00 PM">5:00 PM - 6:00 PM</option>
+            <option value="6:00 PM - 7:00 PM">6:00 PM - 7:00 PM</option>
+            <option value="7:00 PM - 8:00 PM">7:00 PM - 8:00 PM</option>
+            <option value="8:00 PM - 9:00 PM">8:00 PM - 9:00 PM</option>
+          </select>
+          <div id="time-error" class="mt-2 text-sm text-red-600 hidden"></div>
+          <div id="overlap-warning" class="mt-2 text-sm text-orange-600 hidden"></div>
+        </div>
+
+        <!-- Info Box -->
+        <div class="bg-blue-50 border-l-4 border-blue-500 p-4 rounded-lg">
+          <div class="flex items-start">
+            <svg class="w-5 h-5 text-blue-500 mr-2 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd"
+                d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
+                clip-rule="evenodd"></path>
+            </svg>
+            <div class="text-sm text-blue-700">
+              <p class="font-semibold mb-1">Important Notes:</p>
+              <ul class="list-disc list-inside space-y-1">
+                <li>You can only book one trial per product</li>
+                <li>Time slots cannot overlap with your existing trials</li>
+                <li>Date must be in the future</li>
+                <li>The product owner will review your request</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="flex gap-4">
+          <a href="/product/searchp"
+            class="flex-1 px-6 py-3 border-2 border-gray-300 text-gray-700 rounded-xl font-semibold hover:bg-gray-50 transition-all text-center">
+            Cancel
+          </a>
+          <button type="submit" id="submit-btn"
+            class="flex-1 px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl font-semibold hover:from-blue-700 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all transform hover:scale-105">
+            Request Trial
+          </button>
+        </div>
+      </form>
     </div>
-    <button type="submit">Book</button>
-  </form>
+  </div>
 </div>
 
 <script>
-  // Get today's date var today = new Date(); // Calculate the date one month
-  from today var nextMonth = new Date(today.getFullYear(), today.getMonth() + 1,
-  today.getDate()); // Format the date in YYYY-MM-DD format for the input
-  element var formattedDate = nextMonth.toISOString().slice(0, 10); // Set the
-  min and max attributes of the date input element
-  document.getElementById('date').setAttribute('min',
-  today.toISOString().slice(0, 10));
-  document.getElementById('date').setAttribute('max', formattedDate);
+  // Get existing trials data
+  const existingTrials = {{{ existingTrials }}};
+
+  // Set minimum date to today
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const minDate = today.toISOString().split('T')[0];
+
+  // Set maximum date to 3 months from today
+  const maxDate = new Date(today);
+  maxDate.setMonth(maxDate.getMonth() + 3);
+  const maxDateStr = maxDate.toISOString().split('T')[0];
+
+  document.getElementById('date').setAttribute('min', minDate);
+  document.getElementById('date').setAttribute('max', maxDateStr);
+
+  // Check for time slot overlaps
+  function checkOverlap() {
+    const selectedDate = document.getElementById('date').value;
+    const selectedTime = document.getElementById('time').value;
+    const dateError = document.getElementById('date-error');
+    const timeError = document.getElementById('time-error');
+    const overlapWarning = document.getElementById('overlap-warning');
+    const submitBtn = document.getElementById('submit-btn');
+
+    // Reset errors
+    dateError.classList.add('hidden');
+    timeError.classList.add('hidden');
+    overlapWarning.classList.add('hidden');
+    submitBtn.disabled = false;
+
+    if (!selectedDate || !selectedTime) {
+      return;
+    }
+
+    // Check if date is in the past
+    const dateObj = new Date(selectedDate);
+    if (dateObj < today) {
+      dateError.textContent = 'Please select a future date.';
+      dateError.classList.remove('hidden');
+      submitBtn.disabled = true;
+      return;
+    }
+
+    // Check for overlapping trials
+    const overlap = existingTrials.find(trial => {
+      return trial.date === selectedDate && trial.timeSlot === selectedTime;
+    });
+
+    if (overlap) {
+      overlapWarning.textContent = '⚠️ You already have a trial scheduled at this date and time. Please choose a different slot.';
+      overlapWarning.classList.remove('hidden');
+      submitBtn.disabled = true;
+      return;
+    }
+  }
+
+  // Add event listeners
+  document.getElementById('date').addEventListener('change', checkOverlap);
+  document.getElementById('time').addEventListener('change', checkOverlap);
+
+  // Form submission validation
+  document.getElementById('trial-form').addEventListener('submit', function (e) {
+    const date = document.getElementById('date').value;
+    const time = document.getElementById('time').value;
+
+    if (!date || !time) {
+      e.preventDefault();
+      alert('Please select both date and time slot.');
+      return false;
+    }
+
+    // Final overlap check
+    const selectedDate = date;
+    const selectedTime = time;
+    const overlap = existingTrials.find(trial => {
+      return trial.date === selectedDate && trial.timeSlot === selectedTime;
+    });
+
+    if (overlap) {
+      e.preventDefault();
+      alert('You already have a trial scheduled at this date and time. Please choose a different slot.');
+      return false;
+    }
+  });
 </script>

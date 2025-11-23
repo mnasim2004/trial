@@ -5,15 +5,23 @@ dotenv.config();
 
 const db = async () => {
   try {
-    //const mongo_uri="mongodb://localhost:27017/trialmate";
-    const mongo_uri =
-      "mongodb+srv://mohammednasim2004:qvwKHJUtQ0S1hZRX@trialmate.fasasom.mongodb.net/?retryWrites=true&w=majority&appName=trialmate";
+    // Use environment variable if available, otherwise use hardcoded URI
+    const mongo_uri = process.env.MONGO_URI || 
+      "mongodb+srv://mohammednasim2004:qvwKHJUtQ0S1hZRX@trialmate.fasasom.mongodb.net/trialmate?retryWrites=true&w=majority&appName=trialmate";
+    
     if (mongo_uri) {
-      await mongoose.connect(mongo_uri);
-      console.log("Connected to database");
+      await mongoose.connect(mongo_uri, {
+        serverSelectionTimeoutMS: 10000, // 10 seconds timeout
+        socketTimeoutMS: 45000,
+      });
+      console.log("✅ Connected to MongoDB database");
+    } else {
+      console.error("❌ MongoDB URI is not defined");
     }
   } catch (err) {
-    throw new Error("Error to establish database connection:" + err);
+    console.error("❌ Database connection error:", err.message);
+    console.error("⚠️  App will continue running, but database features may not work");
+    // Don't throw error, let the app continue
   }
 };
 

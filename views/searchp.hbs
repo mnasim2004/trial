@@ -1,108 +1,156 @@
-<style>
+<div class="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 py-12 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-7xl mx-auto">
+    <!-- Header -->
+    <div class="text-center mb-8">
+      <h1 class="text-4xl font-bold text-gray-900 mb-2">Search Products</h1>
+      <p class="text-gray-600">Find products available for trial</p>
+    </div>
 
-  .product-image { max-width: 200px; /* Adjust the maximum width as needed */
-  max-height: 150px; /* Adjust the maximum height as needed */ }
-  .user-photo-container { width: 50px; /* Adjust width as needed */ height:
-  50px; /* Adjust height as needed */ overflow: hidden; border-radius: 50%;
-  margin: 0 auto; } .user-photo { width: 100%; height: auto; } .username {
-  text-align: center; font-size: 12px; /* Adjust font size as needed */
-  margin-top: 5px; /* Adjust top margin as needed */ }
+    <!-- Error/Success Messages -->
+    {{#if error}}
+    <div class="mb-6 bg-red-50 border-l-4 border-red-500 p-4 rounded-lg">
+      <div class="flex items-center">
+        <svg class="w-5 h-5 text-red-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
+          <path fill-rule="evenodd"
+            d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+            clip-rule="evenodd"></path>
+        </svg>
+        <p class="text-sm text-red-700 font-medium">{{error}}</p>
+      </div>
+    </div>
+    {{/if}}
 
-</style>
+    {{#if success}}
+    <div class="mb-6 bg-green-50 border-l-4 border-green-500 p-4 rounded-lg">
+      <div class="flex items-center">
+        <svg class="w-5 h-5 text-green-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
+          <path fill-rule="evenodd"
+            d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+            clip-rule="evenodd"></path>
+        </svg>
+        <p class="text-sm text-green-700 font-medium">{{success}}</p>
+      </div>
+    </div>
+    {{/if}}
 
-<div class="container">
-  <div class="row">
-    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-      <h1>Search Products</h1>
-      <form action="/product/searchp" method="GET">
-        <div class="form-group">
-          <label for="brand">Brand:</label>
-          <input type="text" class="form-control" id="brand" name="brand" />
+    <!-- Search Form -->
+    <div class="bg-white rounded-2xl shadow-xl p-6 mb-8">
+      <form action="/product/searchp" method="GET" class="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <div>
+          <label for="brand" class="block text-sm font-medium text-gray-700 mb-2">Brand</label>
+          <input type="text" id="brand" name="brand"
+            class="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            placeholder="e.g., Samsung" />
         </div>
-        <div class="form-group">
-          <label for="price">Price:</label>
-          <input type="number" class="form-control" id="price" name="price" />
+        <div>
+          <label for="price" class="block text-sm font-medium text-gray-700 mb-2">Max Price (₹)</label>
+          <input type="number" id="price" name="price" min="0"
+            class="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            placeholder="Any price" />
         </div>
-        <div class="form-group">
-          <label for="location">Location:</label>
-          <input
-            type="text"
-            class="form-control"
-            id="location"
-            name="location"
-          />
+        <div>
+          <label for="location" class="block text-sm font-medium text-gray-700 mb-2">Location</label>
+          <input type="text" id="location" name="location"
+            class="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            placeholder="City, State" />
         </div>
-        <button type="submit" class="btn btn-primary">Search</button>
+        <div class="flex items-end">
+          <button type="submit"
+            class="w-full px-6 py-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg hover:from-blue-700 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all">
+            Search
+          </button>
+        </div>
       </form>
     </div>
-  </div>
-</div>
 
-<div class="container">
-  <div class="row">
-    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-      <h2>All Products</h2>
-      <ul class="list-group">
-        {{#each products}}
-          <li class="list-group-item">
-            <div class="row">
-              <div class="col-md-9">
-                <div class="col-md-3">
-                  <div class="user-photo-container">
-                    <img
-                      src="https://trialmate.s3.amazonaws.com/{{this.user.photoUrl}}"
-                      alt="User Image"
-                      class="user-photo"
-                    />
-                  </div>
-                  <p class="username">{{this.user.username}}</p>
-                </div>
-                <div class="col-md-3">
-                  <img
-                    src="https://trialmate.s3.amazonaws.com/{{this.photoUrl}}"
-                    alt="Product Image"
-                    class="product-image"
-                  />
-                  <h4>{{this.brand}}</h4>
-                  <p><strong>Title:</strong> {{this.title}}</p>
-                  <p><strong>Description:</strong> {{this.description}}</p>
-                  <p><strong>Price:</strong> {{this.price}}</p>
-                  <p><strong>Location:</strong> {{this.location}}</p>
-                </div>
-              </div>
-              <div class="col-md-3 text-right">
-                <form action="/product/trial" method="POST">
-                  <input
-                    type="hidden"
-                    name="UserId"
-                    value="{{this.user._id}}"
-                  />
-                  <input type="hidden" name="Id" value="{{this._id}}" />
-                  <input type="hidden" name="Brand" value="{{this.brand}}" />
-                  <input type="hidden" name="Title" value="{{this.title}}" />
-                  <input
-                    type="hidden"
-                    name="Description"
-                    value="{{this.description}}"
-                  />
-                  <input type="hidden" name="Price" value="{{this.price}}" />
-                  <input
-                    type="hidden"
-                    name="Location"
-                    value="{{this.location}}"
-                  />
-                  <input
-                    type="hidden"
-                    name="photoUrl"
-                    value="{{this.photoUrl}}"
-                  />
-                  <button type="submit" class="btn btn-success">Trial</button>
-                </form>
-              </div>
-            </div>
-          </li>
-        {{/each}}
-      </ul>
+    <!-- Products Grid -->
+    {{#if products}}
+    <div class="mb-4">
+      <p class="text-gray-600">Found <span class="font-bold text-blue-600">{{products.length}}</span> product(s)</p>
     </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {{#each products}}
+      <div
+        class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow transform hover:-translate-y-1">
+        <!-- Product Image -->
+        <div class="h-48 bg-gray-200 overflow-hidden">
+          <img src="{{imageUrl this.photoUrl}}" alt="{{this.title}}" class="w-full h-full object-cover" />
+        </div>
+
+        <!-- Product Info -->
+        <div class="p-6">
+          <!-- User Info -->
+          <div class="flex items-center mb-4 pb-4 border-b">
+            <img src="{{imageUrl this.user.photoUrl}}" alt="{{this.user.username}}"
+              class="w-10 h-10 rounded-full object-cover mr-3" />
+            <div>
+              <p class="text-sm font-medium text-gray-900">{{this.user.username}}</p>
+              <p class="text-xs text-gray-500">Product Owner</p>
+            </div>
+          </div>
+
+          <!-- Product Details -->
+          <div class="mb-4">
+            <div class="flex items-center justify-between mb-2">
+              <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs font-semibold rounded">{{this.brand}}</span>
+              <span class="text-2xl font-bold text-gray-900">₹{{this.price}}</span>
+            </div>
+            <h3 class="text-xl font-bold text-gray-900 mb-2">{{this.title}}</h3>
+            <p class="text-gray-600 text-sm mb-3 line-clamp-2">{{this.description}}</p>
+            <div class="flex items-center text-sm text-gray-500 mb-4">
+              <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+              </svg>
+              {{this.location}}
+            </div>
+          </div>
+
+          <!-- Action Button -->
+          {{#if loggedIn}}
+          <form action="/product/trial" method="POST">
+            <input type="hidden" name="UserId" value="{{this.user._id}}">
+            <input type="hidden" name="Id" value="{{this._id}}">
+            <input type="hidden" name="Brand" value="{{this.brand}}">
+            <input type="hidden" name="Title" value="{{this.title}}">
+            <input type="hidden" name="Description" value="{{this.description}}">
+            <input type="hidden" name="Price" value="{{this.price}}">
+            <input type="hidden" name="Location" value="{{this.location}}">
+            <input type="hidden" name="photoUrl" value="{{this.photoUrl}}">
+            <button type="submit"
+              class="w-full px-4 py-2 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-lg hover:from-green-600 hover:to-emerald-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-all">
+              Request Trial
+            </button>
+          </form>
+          {{else}}
+          <a href="/users/signin?redirect=/product/searchp"
+            class="block w-full px-4 py-2 bg-gradient-to-r from-blue-500 to-indigo-600 text-white rounded-lg hover:from-blue-600 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all text-center">
+            Login to Request Trial
+          </a>
+          {{/if}}
+        </div>
+      </div>
+      {{/each}}
+    </div>
+    {{else}}
+    <div class="bg-white rounded-2xl shadow-xl p-12 text-center">
+      <svg class="mx-auto h-24 w-24 text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+      </svg>
+      <h3 class="text-xl font-semibold text-gray-900 mb-2">No products found</h3>
+      <p class="text-gray-600 mb-6">Try adjusting your search criteria</p>
+      <a href="/product/searchp"
+        class="inline-block px-8 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg hover:from-blue-700 hover:to-purple-700 transition-all font-semibold shadow-lg transform hover:scale-105 flex items-center space-x-2 mx-auto">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+        </svg>
+        <span>View All Products</span>
+      </a>
+    </div>
+    {{/if}}
   </div>
 </div>
